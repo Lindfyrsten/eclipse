@@ -26,7 +26,16 @@ public class CrapsPlay {
      * Boolean to tell if you won or lost game
      */
     private boolean gameFinished = false;
-    
+    /**
+     * Boolean to tell if want to rety or not
+     */
+    //private boolean retry = true;
+
+    /**
+     * Holder styr på point
+     */
+    private int point = 0;
+
     /**
      * Constructs the PlayRollDie game.
      */
@@ -50,11 +59,12 @@ public class CrapsPlay {
 
         if (gameWon) {
             System.out.println("Sådan! Du vandt!");
-            scan.close();
         }
         else {
             System.out.println("Buhhhhh... Du tabte.");
+
         }
+
     }
 
     /**
@@ -62,33 +72,26 @@ public class CrapsPlay {
      */
     private void takeTurn() {
         
-        int point = 0;
+        die1.roll();
+        die2.roll();
         
-        if (point == 0) {
-            
-            die1.roll();
-            die2.roll();
-            int sum = die1.getFaceValue() + die2.getFaceValue();
-            System.out.println("Du har kastet: " + sum);
-            
-            if (sum == 7 || sum == 11) {
-                gameWon = true;
-                gameFinished = true;
-            }
-            else if (sum == 2 || sum == 3 || sum == 12) {
-                gameFinished = true;
-            }
-            else if (point == 0) {
-                sum = point;
-            }
-            else if (point == sum) {
-                gameFinished = true;
-            }
-            else {
-                point = sum;
-            }
+        int sum = die1.getFaceValue() + die2.getFaceValue();
+        System.out.println("Du har kastet " + sum);
+        if (sum == 7 || sum == 11) {
+            gameWon = true;
+            gameFinished = true;
         }
-        
+        else if (sum == 2 || sum == 3 || sum == 12) {
+            gameFinished = true;
+        }
+        else if (point == sum) {
+            gameFinished = true;
+            
+        }
+        else if (point == 0) {
+            point = sum;
+            System.out.println("Dit point er " + point);
+        }
     }
     
     /**
@@ -103,10 +106,12 @@ public class CrapsPlay {
             String goOn = scan.nextLine();
             if (goOn.equalsIgnoreCase("N")) {
                 gameFinished = true;
+
             }
             else {
                 takeTurn();
             }
+            
         }
         gameOver();
     }
