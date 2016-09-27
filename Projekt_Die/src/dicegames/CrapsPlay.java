@@ -3,7 +3,7 @@ package dicegames;
 import java.util.Scanner;
 
 public class CrapsPlay {
-
+    
     /**
      * The scanner used for reading user input.
      */
@@ -12,12 +12,12 @@ public class CrapsPlay {
      * The first die used in the game.
      */
     private Die die1;
-    
+
     /**
      * The second die used in the game.
      */
     private Die die2;
-    
+
     /**
      * Boolean to tell if you won or lost game
      */
@@ -26,12 +26,18 @@ public class CrapsPlay {
      * Boolean to tell if you won or lost game
      */
     private boolean gameFinished = false;
-    
+
     /**
      * Holder styr på point
      */
     private int point = 0;
-    
+
+    /**
+     * Tæller vundet og tabte spil
+     */
+    private int won;
+    private int lost;
+
     /**
      * Constructs the PlayRollDie game.
      */
@@ -40,7 +46,7 @@ public class CrapsPlay {
         die2 = new Die();
         scan = new Scanner(System.in);
     }
-    
+
     public void retry() {
         System.out.println("Vil du prøve igen? Y/N");
         String goOn = scan.nextLine();
@@ -51,37 +57,39 @@ public class CrapsPlay {
             point = 0;
         }
     }
-
+    
     /**
      * Print out a neat welcome message to the player.
      */
     private void welcomeToGame() {
         System.out.println("Velkommen til spillet Craps!");
     }
-    
+
     /**
      * Finishes the game and prints out the result.
      */
     private void gameOver() {
-        
+
         if (gameWon) {
+            won++;
             System.out.println("Sådan! Du vandt!");
         }
         else {
+            lost++;
             System.out.println("Buhhhhh... Du tabte.");
-            
+
         }
-        
+
     }
-    
+
     /**
      * Take another turn in the game.
      */
     private void takeTurn() {
-
+        
         die1.roll();
         die2.roll();
-
+        
         int sum = die1.getFaceValue() + die2.getFaceValue();
         System.out.println("Du har kastet " + sum);
         if (point == 0) {
@@ -97,7 +105,7 @@ public class CrapsPlay {
             }
         }
         else {
-
+            
             if (sum == 7) {
                 gameOver();
                 retry();
@@ -109,29 +117,31 @@ public class CrapsPlay {
                 retry();
             }
         }
-
+        
     }
-    
+
     /**
      * Start the game loop.<br/>
      * The game is finished when the player chooses to not roll the die anymore.
      */
     public void startGame() {
         welcomeToGame();
-
+        
         while (!gameFinished) {
             System.out.println("Roll the dice? Y/N");
             String goOn = scan.nextLine();
             if (goOn.equalsIgnoreCase("N")) {
                 gameFinished = true;
-                
+
             }
             else {
                 takeTurn();
             }
-
+            
         }
         System.out.println("Tak for spillet :)");
+        System.out.println("Vundet spil: " + won);
+        System.out.println("Tabte spil: " + lost);
         scan.close();
     }
 }
