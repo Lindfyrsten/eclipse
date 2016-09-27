@@ -1,14 +1,18 @@
 package dicegames;
 
+import java.io.File;
 import java.util.Scanner;
 
-public class PigPlay {
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
+public class PigPlay {
+    
     /**
      * The scanner used for reading user input.
      */
     private Scanner scan;
-
+    
     /**
      * Name of the players
      */
@@ -18,47 +22,40 @@ public class PigPlay {
      * The die used in the game.
      */
     private Die die;
-    
+
     /**
      * Points of the players
      */
     private int playerOnePoint;
     private int playerTwoPoint;
-    
+
     /**
      * Boolean to keep track of whose turn it is
      */
     private boolean pOneTurn = true;
-    
+
     /**
      * Check who won
      */
     private boolean pOneWon;
-
+    
     /**
      * Constructs the PlayRollDie game.
      */
     public PigPlay() {
-
+        
         die = new Die();
         scan = new Scanner(System.in);
         pOneTurn = true;
     }
 
-    public int getPlayerOnePoint() {
-        return playerOnePoint;
-    }
-
-    public void setPlayerOnePoint(int playerOnePoint) {
-        this.playerOnePoint = playerOnePoint;
-    }
-
-    public int getPlayerTwoPoint() {
-        return playerTwoPoint;
-    }
-
-    public void setPlayerTwoPoint(int playerTwoPoint) {
-        this.playerTwoPoint = playerTwoPoint;
+    /**
+     * Javafx play sound function
+     */
+    static void play(String fileName) {
+        new javafx.embed.swing.JFXPanel();
+        String uriString = new File(fileName).toURI().toString();
+        new MediaPlayer(new Media(uriString)).play();
     }
 
     /**
@@ -73,44 +70,45 @@ public class PigPlay {
         playerTwo = scan.nextLine();
         System.out.println("Lad spillet begynde!");
         Thread.sleep(2000);
-
+        
     }
-
+    
     /**
      * Finishes the game and prints out the result.
      */
     private void gameOver() {
-
+        
         if (pOneWon) {
             System.out.println(playerOne + " vandt!");
             System.out.println("Tak for spillet");
         }
-        
+
         else {
             System.out.println(playerTwo + " vandt!");
             System.out.println("Tak for spillet");
         }
-        
+
         scan.close();
     }
-
+    
     /**
      * Player one takes a turn.
      * @throws InterruptedException
      */
     private void playerOneTurn() throws InterruptedException {
-
+        
         System.out.println(playerOne + "'s tur.");
         System.out.println("Du har " + playerOnePoint + " point.");
         boolean fortsæt = true;
         int pointLost = playerOnePoint;
         while (fortsæt) {
             System.out.println("Rolling dice...");
-            Thread.sleep(1000);
-            
+            play("Roll.mp3");
+            Thread.sleep(1500);
+
             die.roll();
             int roll = die.getFaceValue();
-
+            
             if (die.getFaceValue() == 1) {
                 System.out.println("Øv! Du rullede 1. Ingen point denne runde");
                 playerOnePoint = pointLost;
@@ -138,7 +136,7 @@ public class PigPlay {
         System.out.println("**************************");
         Thread.sleep(2000);
     }
-
+    
     /**
      * Player two takes a turn.
      */
@@ -149,16 +147,17 @@ public class PigPlay {
         int pointLost = playerTwoPoint;
         while (fortsæt) {
             System.out.println("Rolling dice...");
-            Thread.sleep(1000);
+            play("Roll.mp3");
+            Thread.sleep(1500);
             die.roll();
             int roll = die.getFaceValue();
-
+            
             if (die.getFaceValue() == 1) {
                 System.out.println("Øv! Du rullede 1. Ingen point denne runde");
                 playerTwoPoint = pointLost;
                 fortsæt = false;
             }
-            
+
             else if (playerTwoPoint >= 100) {
                 fortsæt = false;
                 pOneWon = false;
@@ -182,7 +181,7 @@ public class PigPlay {
         System.out.println("**************************");
         Thread.sleep(2000);
     }
-
+    
     /**
      * Start the game loop.<br/>
      * The game is finished when the player chooses to not roll the die anymore.
@@ -190,9 +189,9 @@ public class PigPlay {
      */
     public void startGame() throws InterruptedException {
         welcomeToGame();
-        
+
         boolean finished = false;
-        
+
         while (!finished) {
             if (playerOnePoint >= 100 || playerTwoPoint >= 100) {
                 finished = true;
@@ -203,7 +202,7 @@ public class PigPlay {
             else {
                 playerTwoTurn();
             }
-            
+
         }
         gameOver();
     }
