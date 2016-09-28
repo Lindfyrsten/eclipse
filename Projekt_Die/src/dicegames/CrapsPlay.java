@@ -1,9 +1,13 @@
 package dicegames;
 
+import java.io.File;
 import java.util.Scanner;
 
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+
 public class CrapsPlay {
-    
+
     /**
      * The scanner used for reading user input.
      */
@@ -12,32 +16,41 @@ public class CrapsPlay {
      * The first die used in the game.
      */
     private Die die1;
-
+    
     /**
      * The second die used in the game.
      */
     private Die die2;
-
+    
     /**
      * Boolean to tell if you won or lost game
      */
     private boolean gameWon = false;
     /**
-     * Boolean to tell if you won or lost game
+     * Boolean to tell if game if finished
      */
     private boolean gameFinished = false;
-
+    
     /**
-     * Holder styr på point
+     * Sets the point
      */
     private int point = 0;
-
+    
     /**
-     * Tæller vundet og tabte spil
+     * Counts won and lost games
      */
     private int won;
     private int lost;
 
+    /**
+     * Javafx play sound function
+     */
+    private static void play(String fileName) {
+        new javafx.embed.swing.JFXPanel();
+        String uriString = new File(fileName).toURI().toString();
+        new MediaPlayer(new Media(uriString)).play();
+    }
+    
     /**
      * Constructs the PlayRollDie game.
      */
@@ -46,54 +59,69 @@ public class CrapsPlay {
         die2 = new Die();
         scan = new Scanner(System.in);
     }
-
-    public void retry() {
-        System.out.println("Vil du prøve igen? Y/N");
-        String goOn = scan.nextLine();
-        if (goOn.equalsIgnoreCase("N")) {
-            gameFinished = true;
-        }
-        else {
-            point = 0;
-        }
-    }
     
     /**
      * Print out a neat welcome message to the player.
+     * @throws InterruptedException
      */
-    private void welcomeToGame() {
-        System.out.println("Velkommen til spillet Craps!");
+    private void welcomeToGame() throws InterruptedException {
+        System.out.println("|****************************|");
+        System.out.println("|Velkommen til spillet craps!|");
+        System.out.println("|****************************| \n");
+        Thread.sleep(2000);
+    }
+    
+    /**
+     * Start the game loop.<br/>
+     * The game is finished when the player chooses to not roll the die anymore.
+     * @throws InterruptedException
+     */
+    public void startGame() throws InterruptedException {
+        welcomeToGame();
+
+        while (!gameFinished) {
+            System.out.println("Roll the dice? Y/N");
+            String goOn = scan.nextLine();
+            if (goOn.equalsIgnoreCase("N")) {
+                gameFinished = true;
+                
+            }
+            else {
+                takeTurn();
+            }
+
+        }
+        System.out.println("Tak for spillet :)");
+        Thread.sleep(500);
+        System.out.println("Vundet spil: " + won);
+        System.out.println("Tabte spil: " + lost);
+        scan.close();
+        System.exit(0);
     }
 
     /**
-     * Finishes the game and prints out the result.
+     * Take a turn in the game.
+     * @throws InterruptedException
      */
-    private void gameOver() {
+    private void takeTurn() throws InterruptedException {
 
-        if (gameWon) {
-            won++;
-            System.out.println("Sådan! Du vandt!");
-        }
-        else {
-            lost++;
-            System.out.println("Buhhhhh... Du tabte.");
-
-        }
-
-    }
-
-    /**
-     * Take another turn in the game.
-     */
-    private void takeTurn() {
-        
         die1.roll();
         die2.roll();
-        
+        System.out.print("");
+        System.out.print("");
+        Thread.sleep(250);
+        System.out.print(".");
+        play("Roll.mp3");
+        Thread.sleep(250);
+        System.out.print(".");
+        Thread.sleep(250);
+        System.out.print(".");
+
         int sum = die1.getFaceValue() + die2.getFaceValue();
-        System.out.println("Du har kastet " + sum);
+        System.out.println(sum + "!");
         if (point == 0) {
             point = sum;
+
             if (sum == 7 || sum == 11) {
                 gameWon = true;
                 gameOver();
@@ -103,9 +131,15 @@ public class CrapsPlay {
                 gameOver();
                 retry();
             }
+            else {
+                System.out.println("**********************");
+                System.out.println("Dit point er sat til " + point);
+                System.out.println("**********************");
+                Thread.sleep(500);
+            }
         }
         else {
-            
+
             if (sum == 7) {
                 gameOver();
                 retry();
@@ -117,31 +151,40 @@ public class CrapsPlay {
                 retry();
             }
         }
-        
+
     }
 
     /**
-     * Start the game loop.<br/>
-     * The game is finished when the player chooses to not roll the die anymore.
+     * Finishes the game and prints out the result.
+     * @throws InterruptedException
      */
-    public void startGame() {
-        welcomeToGame();
+    private void gameOver() throws InterruptedException {
         
-        while (!gameFinished) {
-            System.out.println("Roll the dice? Y/N");
-            String goOn = scan.nextLine();
-            if (goOn.equalsIgnoreCase("N")) {
-                gameFinished = true;
-
-            }
-            else {
-                takeTurn();
-            }
+        if (gameWon) {
+            won++;
+            System.out.println("Sådan! Du vandt!");
+            play("Applause.mp3");
+        }
+        else {
+            lost++;
+            System.out.println("Buhhhhh... Du tabte.");
+            play("Boo.mp3");
             
         }
-        System.out.println("Tak for spillet :)");
-        System.out.println("Vundet spil: " + won);
-        System.out.println("Tabte spil: " + lost);
-        scan.close();
+    }
+    
+    /**
+     * Asks if user wants to retry
+     * @throws InterruptedException
+     */
+    public void retry() throws InterruptedException {
+        System.out.println("Vil du prøve igen? Y/N");
+        String goOn = scan.nextLine();
+        if (goOn.equalsIgnoreCase("N")) {
+            gameFinished = true;
+        }
+        else {
+            point = 0;
+        }
     }
 }

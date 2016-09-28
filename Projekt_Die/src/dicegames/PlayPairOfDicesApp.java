@@ -1,11 +1,11 @@
 package dicegames;
 
-public class CrapsPlayApp {
-    
+public class PlayPairOfDicesApp {
+
     public static void main(String[] args) throws InterruptedException {
         // TODO Auto-generated method stub
-        CrapsPlay c = new CrapsPlay();
-        c.startGame();
+        PigPlay p = new PigPlay();
+
+        p.startGame();
     }
-    
 }
