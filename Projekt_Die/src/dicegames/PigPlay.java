@@ -19,6 +19,12 @@ public class PigPlay {
      */
     private String playerOne;
     private String playerTwo;
+    
+    /**
+     * Tælder antallet af ture
+     */
+    private int turnsOne;
+    private int turnsTwo;
 
     /**
      * Boolean to use for single player
@@ -105,13 +111,15 @@ public class PigPlay {
 
         if (pOneWon) {
             System.out.println(playerOne + " vandt!");
-            System.out.println("Tak for spillet");
+
         }
 
         else {
             System.out.println(playerTwo + " vandt!");
-            System.out.println("Tak for spillet");
         }
+        System.out.println("Tak for spillet");
+        System.out.println(playerOne + " brugte " + turnsOne + " ture.");
+        System.out.println(playerTwo + " brugte " + turnsTwo + " ture.");
         play("Applause.mp3");
         scan.close();
     }
@@ -133,7 +141,7 @@ public class PigPlay {
                 
                 fortsæt = false;
                 finished = true;
-
+                
             }
             else if (die.getFaceValue() == 1) {
                 System.out.println("Rolling dice...");
@@ -167,7 +175,7 @@ public class PigPlay {
             }
         }
         if (!fortsæt && finished) {
-
+            
             System.out.println("Vi har en vinder!!!");
             Thread.sleep(250);
             System.out.println(".");
@@ -267,7 +275,7 @@ public class PigPlay {
                 System.out.println("Point: " + playerTwoPoint);
                 System.out.println("*******************************");
                 Random rnd = new Random();
-                int abc = rnd.nextInt(3) + 1;
+                int abc = rnd.nextInt(4) + 1;
                 System.out.println(abc);
                 if (abc == 1 && playerTwoPoint < winNr) {
                     fortsæt = false;
@@ -298,6 +306,7 @@ public class PigPlay {
 
         }
         Thread.sleep(2000);
+
     }
 
     /**
@@ -311,7 +320,7 @@ public class PigPlay {
         while (!finished) {
 
             if (pOneTurn) {
-
+                turnsOne++;
                 System.out.println("____________________________");
                 System.out.println("|");
                 System.out.println("| " + playerOne + "'s tur.");
@@ -321,6 +330,7 @@ public class PigPlay {
                 playerOneTurn();
             }
             else {
+                turnsTwo++;
                 System.out.println("____________________________");
                 System.out.println("|");
                 System.out.println("| " + playerTwo + "'s tur.");
