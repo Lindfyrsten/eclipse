@@ -7,7 +7,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 public class CrapsPlay {
-
+    
     /**
      * The scanner used for reading user input.
      */
@@ -16,12 +16,17 @@ public class CrapsPlay {
      * The first die used in the game.
      */
     private Die die1;
-    
+
     /**
      * The second die used in the game.
      */
     private Die die2;
     
+    /**
+     * Terninger fra Dice klassen
+     */
+    private Dice d;
+
     /**
      * Boolean to tell if you won or lost game
      */
@@ -30,18 +35,18 @@ public class CrapsPlay {
      * Boolean to tell if game if finished
      */
     private boolean gameFinished = false;
-    
+
     /**
      * Sets the point
      */
     private int point = 0;
-    
+
     /**
      * Counts won and lost games
      */
     private int won;
     private int lost;
-
+    
     /**
      * Javafx play sound function
      */
@@ -50,27 +55,30 @@ public class CrapsPlay {
         String uriString = new File(fileName).toURI().toString();
         new MediaPlayer(new Media(uriString)).play();
     }
-    
+
     /**
      * Constructs the PlayRollDie game.
      */
     public CrapsPlay() {
         die1 = new Die();
         die2 = new Die();
+        d = new Dice();
         scan = new Scanner(System.in);
+
     }
-    
+
     /**
      * Print out a neat welcome message to the player.
      * @throws InterruptedException
      */
     private void welcomeToGame() throws InterruptedException {
-        System.out.println("|****************************|");
-        System.out.println("|Velkommen til spillet craps!|");
-        System.out.println("|****************************| \n");
+        System.out.println("");
+        System.out.println("▒█▀▀█ █▀▀█ █▀▀█ █▀▀█ █▀▀");
+        System.out.println("▒█░░░ █▄▄▀ █▄▄█ █░░█ ▀▀█ ");
+        System.out.println("▒█▄▄█ ▀░▀▀ ▀░░▀ █▀▀▀ ▀▀▀ \n");
         Thread.sleep(2000);
     }
-    
+
     /**
      * Start the game loop.<br/>
      * The game is finished when the player chooses to not roll the die anymore.
@@ -78,13 +86,13 @@ public class CrapsPlay {
      */
     public void startGame() throws InterruptedException {
         welcomeToGame();
-
+        
         while (!gameFinished) {
-            System.out.println("Roll the dice? Y/N");
+            System.out.println("Rul terning?  Y/N");
             String goOn = scan.nextLine();
             if (goOn.equalsIgnoreCase("N")) {
                 gameFinished = true;
-                
+
             }
             else {
                 takeTurn();
@@ -98,7 +106,7 @@ public class CrapsPlay {
         scan.close();
         System.exit(0);
     }
-
+    
     /**
      * Take a turn in the game.
      * @throws InterruptedException
@@ -107,21 +115,34 @@ public class CrapsPlay {
 
         die1.roll();
         die2.roll();
-        System.out.print("");
-        System.out.print("");
-        Thread.sleep(250);
-        System.out.print(".");
+        System.out.print("█");
+        Thread.sleep(400);
+        System.out.print("░░░░");
         play("Roll.mp3");
         Thread.sleep(250);
-        System.out.print(".");
+        System.out.print("░░░");
         Thread.sleep(250);
-        System.out.print(".");
-
+        System.out.print("░░█\n");
+        System.out.println("");
+        System.out.println("");
+        d.d1(die1.getFaceValue());
+        System.out.println("");
+        System.out.print("█");
+        Thread.sleep(400);
+        System.out.print("░░░░");
+        play("Roll.mp3");
+        Thread.sleep(250);
+        System.out.print("░░░");
+        Thread.sleep(250);
+        System.out.print("░░█\n");
+        System.out.println("");
+        d.d1(die2.getFaceValue());
+        System.out.println("");
+        Thread.sleep(1000);
         int sum = die1.getFaceValue() + die2.getFaceValue();
-        System.out.println(sum + "!");
         if (point == 0) {
             point = sum;
-
+            
             if (sum == 7 || sum == 11) {
                 gameWon = true;
                 gameOver();
@@ -132,14 +153,19 @@ public class CrapsPlay {
                 retry();
             }
             else {
-                System.out.println("**********************");
-                System.out.println("Dit point er sat til " + point);
-                System.out.println("**********************");
+                System.out.println("▒█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█▒");
+                if (point < 10) {
+                    System.out.println("▒█Dit point er sat til " + point + "  █▒");
+                }
+                else {
+                    System.out.println("▒█Dit point er sat til " + point + " █▒");
+                }
+                System.out.println("▒█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█▒\n");
                 Thread.sleep(500);
             }
         }
         else {
-
+            
             if (sum == 7) {
                 gameOver();
                 retry();
@@ -151,15 +177,15 @@ public class CrapsPlay {
                 retry();
             }
         }
-
+        
     }
-
+    
     /**
      * Finishes the game and prints out the result.
      * @throws InterruptedException
      */
     private void gameOver() throws InterruptedException {
-        
+        Thread.sleep(1000);
         if (gameWon) {
             won++;
             System.out.println("Sådan! Du vandt!");
@@ -169,10 +195,10 @@ public class CrapsPlay {
             lost++;
             System.out.println("Buhhhhh... Du tabte.");
             play("Boo.mp3");
-            
+
         }
     }
-    
+
     /**
      * Asks if user wants to retry
      * @throws InterruptedException

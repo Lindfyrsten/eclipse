@@ -1,12 +1,14 @@
 package dicegames;
 
-public class PigPlayApp {
+import java.io.IOException;
 
-    public static void main(String[] args) throws InterruptedException {
+public class PigPlayApp {
+    
+    public static void main(String[] args) throws InterruptedException, IOException {
         // TODO Auto-generated method stub
         PigPlay p = new PigPlay();
-
+        
         p.startGame();
     }
-    
+
 }
