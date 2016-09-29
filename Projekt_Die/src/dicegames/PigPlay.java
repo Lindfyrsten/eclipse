@@ -82,6 +82,40 @@ public class PigPlay {
     }
     
     /**
+     * Start the game loop.<br/>
+     * The game is finished when the player chooses to not roll the die anymore.
+     * @throws InterruptedException
+     * @throws IOException
+     */
+    public void startGame() throws InterruptedException, IOException {
+        welcomeToGame();
+
+        while (!finished) {
+
+            if (pOneTurn) {
+                turnsOne++;
+                System.out.println("▒█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█");
+                System.out.println("▒█                ▀");
+                System.out.println("▒█ " + playerOne + "'s tur. ");
+                System.out.println("▒█                ▄");
+                System.out.println("▒█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█");
+                playerOneTurn();
+            }
+            else {
+                turnsTwo++;
+                System.out.println("▒█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█");
+                System.out.println("▒█                ▀");
+                System.out.println("▒█ " + playerTwo + "'s tur. ");
+                System.out.println("▒█                ▄");
+                System.out.println("▒█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█");
+                playerTwoTurn();
+            }
+            
+        }
+        gameOver();
+    }
+    
+    /**
      * Print out a neat welcome message to the player.
      * @throws InterruptedException
      */
@@ -114,26 +148,11 @@ public class PigPlay {
         Thread.sleep(2000);
 
     }
-
+    
     /**
-     * Finishes the game and prints out the result.
+     * Roll die effects
+     * @throws InterruptedException
      */
-    private void gameOver() {
-
-        if (pOneWon) {
-            System.out.println(playerOne + " vandt!");
-
-        }
-
-        else {
-            System.out.println(playerTwo + " vandt!");
-        }
-        System.out.println("Tak for spillet");
-        System.out.println(playerOne + " brugte " + turnsOne + " ture.");
-        System.out.println(playerTwo + " brugte " + turnsTwo + " ture.");
-        play("Applause.mp3");
-    }
-
     private void rulTerning() throws InterruptedException {
         System.out.println("");
         System.out.println("");
@@ -149,7 +168,7 @@ public class PigPlay {
         d.d1(die.getFaceValue());
         Thread.sleep(1000);
     }
-    
+
     /**
      * Player one takes a turn.
      * @throws InterruptedException
@@ -327,36 +346,29 @@ public class PigPlay {
     }
 
     /**
-     * Start the game loop.<br/>
-     * The game is finished when the player chooses to not roll the die anymore.
-     * @throws InterruptedException
-     * @throws IOException
+     * Finishes the game and prints out the result.
      */
-    public void startGame() throws InterruptedException, IOException {
-        welcomeToGame();
+    private void gameOver() {
 
-        while (!finished) {
+        if (pOneWon) {
+            System.out.println(playerOne + " vandt!");
 
-            if (pOneTurn) {
-                turnsOne++;
-                System.out.println("▒█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█");
-                System.out.println("▒█                ▀");
-                System.out.println("▒█ " + playerOne + "'s tur. ");
-                System.out.println("▒█                ▄");
-                System.out.println("▒█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█");
-                playerOneTurn();
-            }
-            else {
-                turnsTwo++;
-                System.out.println("▒█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█");
-                System.out.println("▒█                ▀");
-                System.out.println("▒█ " + playerTwo + "'s tur. ");
-                System.out.println("▒█                ▄");
-                System.out.println("▒█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█");
-                playerTwoTurn();
-            }
-            
         }
-        gameOver();
+
+        else {
+            System.out.println(playerTwo + " vandt!");
+        }
+
+        System.out.println("\nTak for spillet\n");
+        System.out.println(playerOne + " brugte " + turnsOne + " ture.");
+        System.out.println(playerTwo + " brugte " + turnsTwo + " ture.");
+        if (npc == true && pOneWon == false) {
+            play("Boo.mp3");
+        }
+        else {
+            play("Applause.mp3");
+        }
+        
     }
+    
 }
