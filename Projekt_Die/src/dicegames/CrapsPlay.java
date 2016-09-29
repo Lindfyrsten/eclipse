@@ -115,30 +115,15 @@ public class CrapsPlay {
 
         die1.roll();
         die2.roll();
-        System.out.print("█");
-        Thread.sleep(400);
-        System.out.print("░░░░");
+        Thread.sleep(1000);
         play("Roll.mp3");
-        Thread.sleep(250);
-        System.out.print("░░░");
-        Thread.sleep(250);
-        System.out.print("░░█\n");
         System.out.println("");
         System.out.println("");
         d.d1(die1.getFaceValue());
         System.out.println("");
-        System.out.print("█");
-        Thread.sleep(400);
-        System.out.print("░░░░");
-        play("Roll.mp3");
-        Thread.sleep(250);
-        System.out.print("░░░");
-        Thread.sleep(250);
-        System.out.print("░░█\n");
-        System.out.println("");
         d.d1(die2.getFaceValue());
         System.out.println("");
-        Thread.sleep(1000);
+        Thread.sleep(500);
         int sum = die1.getFaceValue() + die2.getFaceValue();
         if (point == 0) {
             point = sum;

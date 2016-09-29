@@ -9,29 +9,34 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
 public class PigPlay {
-
+    
     /**
      * The scanner used for reading user input.
      */
     private Scanner scan;
-
+    
     /**
      * Name of the players
      */
     private String playerOne;
     private String playerTwo;
-    
+
     /**
      * Tælder antallet af ture
      */
     private int turnsOne;
     private int turnsTwo;
-
+    
+    /**
+     * tæller antallet rolls per spiller
+     */
+    private int pOneRolls;
+    private int pTwoRolls;
     /**
      * Boolean to use for single player
      */
     private boolean npc = false;
-
+    
     /**
      * The die used in the game.
      */
@@ -40,38 +45,38 @@ public class PigPlay {
      * Terninger fra Dice klassen
      */
     private Dice d;
-
-    private int winNr;
     
+    private int winNr;
+
     /**
      * Points of the players
      */
     private int playerOnePoint;
     private int playerTwoPoint;
-    
+
     private boolean finished = false;
-    
+
     /**
      * Boolean to keep track of whose turn it is
      */
     private boolean pOneTurn = true;
-    
+
     /**
      * Check who won
      */
     private boolean pOneWon = true;
-
+    
     /**
      * Constructs the PlayRollDie game.
      */
     public PigPlay() {
-
+        
         d = new Dice();
         die = new Die();
         scan = new Scanner(System.in);
         pOneTurn = true;
     }
-    
+
     /**
      * Javafx play sound function
      */
@@ -80,7 +85,7 @@ public class PigPlay {
         String uriString = new File(fileName).toURI().toString();
         new MediaPlayer(new Media(uriString)).play();
     }
-    
+
     /**
      * Start the game loop.<br/>
      * The game is finished when the player chooses to not roll the die anymore.
@@ -89,9 +94,9 @@ public class PigPlay {
      */
     public void startGame() throws InterruptedException, IOException {
         welcomeToGame();
-
+        
         while (!finished) {
-
+            
             if (pOneTurn) {
                 turnsOne++;
                 System.out.println("▒█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█");
@@ -110,11 +115,11 @@ public class PigPlay {
                 System.out.println("▒█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█");
                 playerTwoTurn();
             }
-            
+
         }
         gameOver();
     }
-    
+
     /**
      * Print out a neat welcome message to the player.
      * @throws InterruptedException
@@ -125,7 +130,7 @@ public class PigPlay {
         System.out.println("▒█░▄▄ █▄▄▀ ▀█▀ ▀▀█");
         System.out.println("▒█▄▄█ ▀░▀▀ ▀▀▀ ▀▀▀");
         System.out.println("");
-
+        
         Thread.sleep(1000);
         System.out.println("Antal spillere? 1/2");
         int twoP = scan.nextInt();
@@ -140,15 +145,15 @@ public class PigPlay {
             System.out.println("Hvad er navn på spiller 2?");
             playerTwo = scan.nextLine();
         }
-
+        
         System.out.println("Hvad skal der spilles til?");
         winNr = scan.nextInt();
         scan.nextLine();
         System.out.println("Held og lykke ٩(●̮̃•)۶\n");
         Thread.sleep(2000);
-
+        
     }
-    
+
     /**
      * Roll die effects
      * @throws InterruptedException
@@ -156,26 +161,18 @@ public class PigPlay {
     private void rulTerning() throws InterruptedException {
         System.out.println("");
         System.out.println("");
-        System.out.print("█");
-        Thread.sleep(400);
-        System.out.print("░░░░");
         play("Roll.mp3");
-        Thread.sleep(250);
-        System.out.print("░░░");
-        Thread.sleep(250);
-        System.out.print("░░█\n");
-        System.out.println("");
         d.d1(die.getFaceValue());
         Thread.sleep(1000);
     }
-
+    
     /**
      * Player one takes a turn.
      * @throws InterruptedException
      * @throws IOException
      */
     private void playerOneTurn() throws InterruptedException, IOException {
-        
+
         System.out.println("\nTryk enter for starte " + playerOne + "'s tur.");
         System.in.read();
         scan.nextLine();
@@ -183,14 +180,15 @@ public class PigPlay {
         int pointLost = playerOnePoint;
         while (fortsæt) {
             
+            pOneRolls++;
             die.roll();
             int roll = die.getFaceValue();
-            
+
             if (playerOnePoint >= winNr) {
-                
+
                 fortsæt = false;
                 finished = true;
-                
+
             }
             else if (die.getFaceValue() == 1) {
                 rulTerning();
@@ -205,20 +203,20 @@ public class PigPlay {
                 System.out.println("▒█ Point før tur  : " + pointLost + "     █▒");
                 System.out.println("▒█ Nuværende point: " + playerOnePoint + "     █▒");
                 System.out.println("▒█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█▒\n");
-                
+
                 if (playerOnePoint < winNr) {
                     System.out.println("Vil du fortsætte: Y/N");
-                    
+
                     String goOn = scan.nextLine();
                     if (goOn.equalsIgnoreCase("N")) {
                         fortsæt = false;
                     }
-                    
+
                 }
             }
         }
         if (!fortsæt && finished) {
-            
+
             System.out.println("Vi har en vinder!!!");
             Thread.sleep(250);
             System.out.println(".");
@@ -230,16 +228,16 @@ public class PigPlay {
             System.out.println("....");
         }
         else {
-            
+
             pOneTurn = false;
             System.out.println("");
             System.out.println("Skifter spiller...");
             System.out.println("");
-            
+
         }
         Thread.sleep(2000);
     }
-
+    
     /**
      * Player two takes a turn.
      * @throws IOException
@@ -252,14 +250,15 @@ public class PigPlay {
         int pointLost = playerTwoPoint;
         while (fortsæt && npc == false) {
             
+            pTwoRolls++;
             die.roll();
             int roll = die.getFaceValue();
-
+            
             if (playerTwoPoint >= winNr) {
                 pOneWon = false;
                 fortsæt = false;
                 finished = true;
-
+                
             }
             else if (die.getFaceValue() == 1) {
                 rulTerning();
@@ -269,33 +268,34 @@ public class PigPlay {
             }
             else {
                 rulTerning();
-                playerOnePoint = playerTwoPoint + roll;
+                playerTwoPoint = playerTwoPoint + roll;
                 System.out.println("\n▒█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█▒");
                 System.out.println("▒█ Point før tur  : " + pointLost + "     █▒");
                 System.out.println("▒█ Nuværende point: " + playerTwoPoint + "     █▒");
                 System.out.println("▒█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█▒\n");
-
+                
                 if (playerTwoPoint < winNr) {
                     System.out.println("Vil du fortsætte: Y/N");
-
+                    
                     String goOn = scan.nextLine();
                     if (goOn.equalsIgnoreCase("N")) {
                         fortsæt = false;
                     }
                 }
-
+                
             }
         }
         while (fortsæt && npc == true) {
-
+            
+            pTwoRolls++;
             die.roll();
             int roll = die.getFaceValue();
-
+            
             if (playerTwoPoint >= winNr) {
                 pOneWon = false;
                 fortsæt = false;
                 finished = true;
-
+                
             }
             else if (die.getFaceValue() == 1) {
                 rulTerning();
@@ -310,7 +310,7 @@ public class PigPlay {
                 System.out.println("▒█ Point før tur  : " + pointLost + "     █▒");
                 System.out.println("▒█ Nuværende point: " + playerTwoPoint + "     █▒");
                 System.out.println("▒█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█▒\n");
-
+                
                 Random rnd = new Random();
                 int abc = rnd.nextInt(4) + 1;
                 if (abc == 1 && playerTwoPoint < winNr) {
@@ -320,9 +320,9 @@ public class PigPlay {
                 Thread.sleep(2000);
             }
         }
-
+        
         if (!fortsæt && finished) {
-
+            
             System.out.println("Vi har en vinder!!!");
             Thread.sleep(250);
             System.out.println(".");
@@ -334,41 +334,52 @@ public class PigPlay {
             System.out.println("....");
         }
         else {
-
+            
             pOneTurn = true;
             System.out.println("");
             System.out.println("Skifter spiller...");
             System.out.println("");
-
+            
         }
         Thread.sleep(2000);
-
+        
     }
-
+    
     /**
      * Finishes the game and prints out the result.
      */
     private void gameOver() {
-
+        
         if (pOneWon) {
             System.out.println(playerOne + " vandt!");
-
+            
         }
-
+        
         else {
             System.out.println(playerTwo + " vandt!");
         }
-
+        
         System.out.println("\nTak for spillet\n");
         System.out.println(playerOne + " brugte " + turnsOne + " ture.");
         System.out.println(playerTwo + " brugte " + turnsTwo + " ture.");
+        System.out.println(playerOne + " kastede " + pOneRolls + " gange.");
+        System.out.println(playerTwo + " kastede " + pTwoRolls + " gange.");
+        double snit = (double) pOneRolls / (double) turnsOne;
+        System.out.print(playerOne + " kastede i gennemsnit ");
+        System.out.printf("%.2f", snit);
+        System.out.println(" gange.");
+        snit = (double) pTwoRolls / (double) turnsTwo;
+        System.out.print(playerTwo + " kastede i gennemsnit ");
+        System.out.printf("%.2f", snit);
+        System.out.print(" gange.");
+        
         if (npc == true && pOneWon == false) {
             play("Boo.mp3");
         }
         else {
             play("Applause.mp3");
         }
-        
+
     }
-    
+
 }

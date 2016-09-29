@@ -1,4 +1,4 @@
-package dicegames;
+
 
 public class PairOfDicesApp {
     
