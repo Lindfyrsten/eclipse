@@ -1,10 +1,7 @@
 package dicegames;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.Scanner;
-
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 
 public class CrapsPlay {
 
@@ -46,15 +43,6 @@ public class CrapsPlay {
      */
     private int won;
     private int lost;
-
-    /**
-     * Javafx play sound function
-     */
-    private static void play(String fileName) {
-        new javafx.embed.swing.JFXPanel();
-        String uriString = new File(fileName).toURI().toString();
-        new MediaPlayer(new Media(uriString)).play();
-    }
     
     /**
      * Constructs the PlayRollDie game.
@@ -83,20 +71,16 @@ public class CrapsPlay {
      * Start the game loop.<br/>
      * The game is finished when the player chooses to not roll the die anymore.
      * @throws InterruptedException
+     * @throws IOException
      */
-    public void startGame() throws InterruptedException {
+    public void startGame() throws InterruptedException, IOException {
         welcomeToGame();
 
         while (!gameFinished) {
-            System.out.println("Rul terning?  Y/N");
-            String goOn = scan.nextLine();
-            if (goOn.equalsIgnoreCase("N")) {
-                gameFinished = true;
-                
-            }
-            else {
-                takeTurn();
-            }
+            System.out.println("Tryk enter for at rulle.");
+            System.in.read();
+            scan.nextLine();
+            takeTurn();
             
         }
         System.out.println("Tak for spillet :)");
@@ -115,8 +99,7 @@ public class CrapsPlay {
         
         die1.roll();
         die2.roll();
-        Thread.sleep(1000);
-        play("Lyde/Roll.mp3");
+        Dice.playSound("src/lyde/Roll.mp3");
         System.out.println("");
         System.out.println("");
         d.d1(die1.getFaceValue());
@@ -174,12 +157,12 @@ public class CrapsPlay {
         if (gameWon) {
             won++;
             System.out.println("Sådan! Du vandt!");
-            play("Lyde/Applause.mp3");
+            Dice.playSound("src/lyde/Applause.mp3");
         }
         else {
             lost++;
             System.out.println("Buhhhhh... Du tabte.");
-            play("Lyde/Boo.mp3");
+            Dice.playSound("src/lyde/Boo.mp3");
             
         }
     }
