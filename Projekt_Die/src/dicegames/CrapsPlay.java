@@ -116,7 +116,7 @@ public class CrapsPlay {
         die1.roll();
         die2.roll();
         Thread.sleep(1000);
-        play("/dicegames/Roll.mp3");
+        play("Lyde/Roll.mp3");
         System.out.println("");
         System.out.println("");
         d.d1(die1.getFaceValue());
@@ -174,12 +174,12 @@ public class CrapsPlay {
         if (gameWon) {
             won++;
             System.out.println("Sådan! Du vandt!");
-            play("Applause.mp3");
+            play("Lyde/Applause.mp3");
         }
         else {
             lost++;
             System.out.println("Buhhhhh... Du tabte.");
-            play("Boo.mp3");
+            play("Lyde/Boo.mp3");
             
         }
     }

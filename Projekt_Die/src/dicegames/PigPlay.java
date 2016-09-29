@@ -161,7 +161,7 @@ public class PigPlay {
     private void rulTerning() throws InterruptedException {
         System.out.println("");
         System.out.println("");
-        play("Roll.mp3");
+        play("Lyde/Roll.mp3");
         d.d1(die.getFaceValue());
         Thread.sleep(1000);
     }
@@ -362,22 +362,22 @@ public class PigPlay {
         System.out.println("\nTak for spillet\n");
         System.out.println(playerOne + " brugte " + turnsOne + " ture.");
         System.out.println(playerTwo + " brugte " + turnsTwo + " ture.");
-        System.out.println(playerOne + " kastede " + pOneRolls + " gange.");
-        System.out.println(playerTwo + " kastede " + pTwoRolls + " gange.");
+        System.out.println(playerOne + " kastede " + pOneRolls + " gange hver tur.");
+        System.out.println(playerTwo + " kastede " + pTwoRolls + " gange hver tur.");
         double snit = (double) pOneRolls / (double) turnsOne;
         System.out.print(playerOne + " kastede i gennemsnit ");
-        System.out.printf("%.2f", snit);
+        System.out.printf("%.1f", snit);
         System.out.println(" gange.");
         snit = (double) pTwoRolls / (double) turnsTwo;
         System.out.print(playerTwo + " kastede i gennemsnit ");
-        System.out.printf("%.2f", snit);
+        System.out.printf("%.1f", snit);
         System.out.print(" gange.");
         
         if (npc == true && pOneWon == false) {
-            play("Boo.mp3");
+            play("Lyde/Boo.mp3");
         }
         else {
-            play("Applause.mp3");
+            play("Lyde/Applause.mp3");
         }
 
     }

@@ -70,61 +70,53 @@ public class PairOfDices {
             rekord = getSumOfDices();
         }
         
-        if (die1.getFaceValue() == 1 || die1.getFaceValue() == 1) {
-            one++;
-            
-        }
-        else if (die1.getFaceValue() == 1 && die1.getFaceValue() == 1) {
-            one = one + 2;
-            
+        if (die1.getFaceValue() == 6 && die2.getFaceValue() == 6) {
+            six = six + 2;
         }
         
-        if (die1.getFaceValue() == 2 || die1.getFaceValue() == 2) {
-            two++;
-        }
-        
-        else if (die1.getFaceValue() == 2 && die1.getFaceValue() == 2) {
-            two = two + 2;
-            
-        }
-        
-        if (die1.getFaceValue() == 3 || die1.getFaceValue() == 3) {
-            three++;
-        }
-        
-        else if (die1.getFaceValue() == 3 && die1.getFaceValue() == 3) {
-            three = three + 2;
-            
-        }
-        
-        if (die1.getFaceValue() == 4 || die1.getFaceValue() == 4) {
-            two++;
-        }
-        
-        else if (die1.getFaceValue() == 4 && die1.getFaceValue() == 4) {
-            four = four + 2;
-            
-        }
-        
-        if (die1.getFaceValue() == 5 || die1.getFaceValue() == 5) {
-            five++;
-        }
-        
-        else if (die1.getFaceValue() == 5 && die1.getFaceValue() == 5) {
-            five = five + 2;
-            
-        }
-        
-        if (die1.getFaceValue() == 6 || die1.getFaceValue() == 6) {
+        else if (die1.getFaceValue() == 6 || die2.getFaceValue() == 6) {
             six++;
         }
-        
-        else if (die1.getFaceValue() == 6 && die1.getFaceValue() == 6) {
-            six = six + 2;
-            
+        if (die1.getFaceValue() == 5 && die2.getFaceValue() == 5) {
+            five = five + 2;
         }
         
-        if (die1.getFaceValue() == (die2.getFaceValue())) {
+        else if (die1.getFaceValue() == 5 || die2.getFaceValue() == 5) {
+            five++;
+        }
+        if (die1.getFaceValue() == 4 && die2.getFaceValue() == 4) {
+            four = four + 2;
+        }
+        
+        else if (die1.getFaceValue() == 4 || die2.getFaceValue() == 4) {
+            four++;
+        }
+        if (die1.getFaceValue() == 3 && die2.getFaceValue() == 3) {
+            three = three + 2;
+        }
+        
+        else if (die1.getFaceValue() == 3 || die2.getFaceValue() == 3) {
+            three++;
+        }
+
+        if (die1.getFaceValue() == 2 && die2.getFaceValue() == 2) {
+            two = two + 2;
+        }
+        
+        else if (die1.getFaceValue() == 2 || die2.getFaceValue() == 2) {
+            two++;
+        }
+        if (die1.getFaceValue() == 1 && die2.getFaceValue() == 1) {
+            one = one + 2;
+        }
+        
+        else if (die1.getFaceValue() == 1 || die2.getFaceValue() == 1) {
+            one++;
+        }
+        if (die1.getFaceValue() == die2.getFaceValue()) {
+            System.out.println(
+                "Du ramte et par " + die1.getFaceValue()
+                    + "'ere");
             pair++;
         }
         
