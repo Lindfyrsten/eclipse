@@ -11,17 +11,17 @@ public class MainApp extends Application {
     public static void main(String[] args) {
         Application.launch(args);
     }
-    
+
     @Override
     public void start(Stage stage) {
         GridPane root = initContent();
         Scene scene = new Scene(root);
-        
+
         stage.setTitle("Loops");
         stage.setScene(scene);
         stage.show();
     }
-    
+
     private GridPane initContent() {
         GridPane pane = new GridPane();
         Canvas canvas = new Canvas(200, 200);
@@ -29,9 +29,9 @@ public class MainApp extends Application {
         drawShapes(canvas.getGraphicsContext2D());
         return pane;
     }
-    
-    // ------------------------------------------------------------------------
 
+    // ------------------------------------------------------------------------
+    
     //  FIGUR 1
     //
 //    private void drawShapes(GraphicsContext gc) {
@@ -45,7 +45,7 @@ public class MainApp extends Application {
 //        }
 //
 //    }
-    
+
     //
     // FIGUR 2
     //
@@ -61,7 +61,7 @@ public class MainApp extends Application {
 //        }
 //
 //    }
-
+    
     //
     // FIGUR 3
     //
@@ -69,13 +69,12 @@ public class MainApp extends Application {
         int x = 100; //center (x,y)
         int y = 100;
         int r = 100; //radius
-
+        
         while (r >= 20) {
             gc.strokeOval(x - r, y - 40, 2 * r, 80);
             r = r - 10;
-
         }
-        
+
     }
-    
+
 }
