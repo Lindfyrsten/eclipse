@@ -20,8 +20,9 @@ public class ChildApp {
 //                "Største årlige vægtforøgning var " + String.format("%.2f", Kristian.getIncrease())
 //                    + "kg.");
 
-        System.out.println("Børn i " + Huset.getNavn() + ", " + Huset.getAddresse()
-            + ": " + Arrays.toString(Huset.getBørn()));
+        System.out
+            .println("Børn i " + Huset.getNavn() + ", " + Huset.getAddresse()
+                + ": " + Arrays.toString(Huset.getBørn()));
         System.out.println("Gennemsnitlige alder er: " + Huset.averageAge());
         System.out.println("Antal piger: " + Huset.numberOfGirls());
         System.out.println("Antal drenge: " + Huset.numberOfBoys());
