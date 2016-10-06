@@ -197,4 +197,73 @@ public class ArrayMethods {
         }
         return uneven;
     }
+    
+    public void reverse(int a, int b, int[] tabel) {
+        int t = tabel[a];
+        tabel[a] = tabel[b];
+        tabel[b] = t;
+
+    }
+    
+    public void reversePush(int[] tabel, int pos) {
+        int last = tabel[tabel.length - 1];
+        System.arraycopy(tabel, pos, tabel, pos + 1, tabel.length - pos - 1);
+        tabel[pos] = last;
+    }
+    
+    public void replaceEven(int[] tabel) {
+        for (int i = 0; i < tabel.length; i++) {
+            if (tabel[i] % 2 == 0) {
+                tabel[i] = 0;
+            }
+        }
+    }
+    
+    /**
+     * Finder almost max
+     */
+    public int findAlmostMax(int[] tabel) {
+        int max = -1;
+        int aMax = -2;
+        for (int i = 0; i < tabel.length; i++) {
+            if (tabel[i] > max) {
+                aMax = max;
+                max = tabel[i];
+            }
+            else if (tabel[i] < aMax && tabel[i] > aMax) {
+                aMax = tabel[i];
+            }
+        }
+        return aMax;
+    }
+
+    /**
+     * Tjekker om array er stigende
+     */
+    public boolean stigende(int[] tabel) {
+        boolean stigende;
+        int t = tabel.length - 1;
+        if (tabel[t] > tabel[0]) {
+            stigende = true;
+        }
+        else {
+            stigende = false;
+        }
+        return stigende;
+    }
+    
+    /**
+     * Tjekker om array er stigende
+     */
+    public boolean dupes(int[] tabel) {
+        boolean dupes = false;
+        for (int a = 0; a < tabel.length; a++) {
+            for (int b = a + 1; b < tabel.length; b++) {
+                if (tabel[a] == tabel[b]) {
+                    dupes = true;
+                }
+            }
+        }
+        return dupes;
+    }
 }
