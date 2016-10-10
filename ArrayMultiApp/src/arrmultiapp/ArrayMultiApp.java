@@ -8,23 +8,21 @@ public class ArrayMultiApp {
         // TODO Auto-generated method stub
         
         int[][] values = new int[row][col];
-        
-//        for (int row = 0; row < values.length; row++) {
-//            for (int col = 0; col < values[row].length; col++) {
-//                values[row][col] = 5;
-//            }
-//
-//        }
-        boolean isNul = true;
-        
-        if (isNul) {
-            
+        System.out.println();
+        for (int row = 0; row < values.length; row++) {
+            for (int col = 0; col < values[row].length; col++) {
+                values[row][col] = 5;
+                System.out.print(values[row][col] + "  ");
+            }
+            System.out.println();
+
         }
+        System.out.println();
         for (int row = 0; row < values.length; row++) {
             for (int col = 0; col < values[row].length; col++) {
                 
             }
-            
+            System.out.println();
         }
         System.out.println();
         for (int row = 0; row < values.length; row++) {
