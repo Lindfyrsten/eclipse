@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 public class Ombyt extends Application {
     
     public static void main(String[] args) {
+        
         Application.launch(args);
     }
     
@@ -25,25 +26,31 @@ public class Ombyt extends Application {
         stage.show();
     }
 
+    private TextField txf1;
+    private TextField txf2;
+
     private void initContent(GridPane pane) {
         
-        pane.setGridLinesVisible(true);
+        pane.setGridLinesVisible(false);
         pane.setPadding(new Insets(20));
         pane.setHgap(10);
         pane.setVgap(10);
-        
-        TextField txf1 = new TextField();
+        txf1 = new TextField();
+        txf2 = new TextField();
         pane.add(txf1, 1, 1, 2, 1);
-        TextField txf2 = new TextField();
         pane.add(txf2, 1, 2, 2, 1);
 
         Button btnSwap = new Button("Ombyt");
         pane.add(btnSwap, 2, 3);
 
+        btnSwap.setOnAction(event -> ombyt());
     }
 
     public void ombyt() {
-        TextField temp = new TextField();
-        temp = txf1;
+        String value1 = txf1.getText();
+        String value2 = txf2.getText();
+        txf1.setText(value2);
+        txf2.setText(value1);
     }
+
 }
