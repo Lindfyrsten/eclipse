@@ -1,5 +1,8 @@
 package modelfravaer;
 
+/**
+ * @author Kristian
+ */
 public class AfproevFravaersSystem {
     
     public static void main(String[] args) {
@@ -10,7 +13,12 @@ public class AfproevFravaersSystem {
         
         FravaersSystem karakterSystem = new FravaersSystem();
         karakterSystem.udskrivFravaer(fravaer16S);
-        System.out.println();
+        karakterSystem.samletFravaer(fravaer16S, 5);
+        karakterSystem.gennemsnit(fravaer16S, 5);
+        karakterSystem.antalUdenFravaer(fravaer16S);
+        karakterSystem.mestFravaer(fravaer16S);
+        karakterSystem.nulstil(fravaer16S, 5);
+        karakterSystem.samletFravaer(fravaer16S, 5);
         
     }
 }
