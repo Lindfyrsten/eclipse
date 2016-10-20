@@ -1,41 +1,45 @@
 package opgaver;
 
 public class Person {
-    private String firstName;
-    private String lastName;
-    
+    private String name;
+    private String title;
+
     private String email;
-    private boolean senior = false;
-    
-    public Person(String firstName, String lastName, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
+    private boolean senior;
+
+    public Person(String name, String title, boolean senior) {
+        this.name = name;
+        this.title = title;
+        this.senior = senior;
     }
-    
-    public String getFirstName() {
-        return firstName;
+
+    public String getName() {
+        return name;
     }
-    
-    public String getLastName() {
-        return lastName;
+
+    public String getTitle() {
+        return title;
     }
-    
+
     public String getEmail() {
         return this.email;
     }
-    
+
     public boolean isSenior() {
         return senior;
     }
-    
+
     public void setSenior(boolean senior) {
         this.senior = senior;
     }
-    
+
     @Override
     public String toString() {
-        return firstName + " " + lastName + " (" + email + ")" + " | Senior:  " + senior;
+        String s = title + " " + name;
+        if (senior) {
+            s = s + " (senior)";
+        }
+        return s;
     }
-    
+
 }
