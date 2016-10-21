@@ -23,72 +23,72 @@ public class PersonAdd extends Stage {
         setMinHeight(100);
         setMinWidth(200);
         setResizable(false);
-        
+
         setTitle(title);
         GridPane pane = new GridPane();
         initContent(pane);
         Scene scene = new Scene(pane);
         setScene(scene);
     }
-
+    
     // ===========================================================
     // Constants
     // ===========================================================
-
+    
     private TextField txfName;
     private TextField txfTitle;
     private CheckBox checkBox;
     private Person actualPerson = null;
-    
+
     // ===========================================================
     // Fields
     // ===========================================================
-
+    
     // ===========================================================
     // Constructors
     // ===========================================================
     private void initContent(GridPane pane) {
-        
+
         pane.setPadding(new Insets(20));
         pane.setVgap(10);
         pane.setHgap(10);
-
+        
         Label lblName = new Label("Name:");
         pane.add(lblName, 0, 0);
         Label lblTitle = new Label("Title:");
         pane.add(lblTitle, 0, 1);
-        
+
         txfName = new TextField();
         pane.add(txfName, 1, 0, 2, 1);
         txfTitle = new TextField();
         pane.add(txfTitle, 1, 1, 2, 1);
-        
+
         checkBox = new CheckBox();
         checkBox.setText("Senior");
         pane.add(checkBox, 1, 2);
-
+        
         HBox buttonBox = new HBox(20);
         pane.add(buttonBox, 0, 3);
         buttonBox.setPadding(new Insets(10, 10, 0, 10));
         buttonBox.setAlignment(Pos.TOP_RIGHT);
-        
+
         Button btnCancel = new Button("Cancel");
         buttonBox.getChildren().add(btnCancel);
         btnCancel.setOnAction(event -> cancelAction());
-
+        
         Button btnOk = new Button("OK");
         buttonBox.getChildren().add(btnOk);
         btnOk.setOnAction(event -> okAction());
-        
+
     }
     // ===========================================================
     // Getter & Setter
     // ===========================================================
-    
+
     // ===========================================================
     // Methods for/from SuperClass/Interfaces
     // ===========================================================
-    
+
     // ===========================================================
     // Methods
     // ===========================================================
@@ -99,9 +99,9 @@ public class PersonAdd extends Stage {
         actualPerson = null;
         PersonAdd.this.hide();
     }
-    
+
     private void okAction() {
-        
+
         String name = txfName.getText().trim();
         String title = txfTitle.getText().trim();
         if (name.length() == 0) {
@@ -124,16 +124,18 @@ public class PersonAdd extends Stage {
             if (checkBox.isSelected()) {
                 actualPerson.setSenior(true);
             }
-
+            
         }
     }
-
+    
     public Person getActualPerson() {
         return actualPerson;
     }
-
+    
     public void clearActualPerson() {
         actualPerson = null;
+        txfName.clear();
+        txfTitle.clear();
     }
     // ===========================================================
     // Inner and Anonymous Classes

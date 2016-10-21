@@ -35,7 +35,7 @@ public class MainApp extends Application {
 	// -------------------------------------------------------------------------
 
 	private TextField txfName;
-	private ListView<Person> lvwPersons;
+	private ListView<PersonDemo> lvwPersons;
 
 	private final Controller controller = new Controller();
 
@@ -56,13 +56,13 @@ public class MainApp extends Application {
 		txfName = new TextField();
 		pane.add(txfName, 1, 0);
 
-		lvwPersons = new ListView<Person>();
+		lvwPersons = new ListView<PersonDemo>();
 		pane.add(lvwPersons, 1, 1);
 		lvwPersons.setPrefWidth(200);
 		lvwPersons.setPrefHeight(200);
-		lvwPersons.getItems().setAll(controller.persons);
+		lvwPersons.getItems().setAll(controller.personDemos);
 
-		ChangeListener<Person> listener = (ov, oldPerson, newPerson) -> this.controller.personsItemSelected();
+		ChangeListener<PersonDemo> listener = (ov, oldPerson, newPerson) -> this.controller.personsItemSelected();
 		lvwPersons.getSelectionModel().selectedItemProperty().addListener(listener);
 
 		Button btnAdd = new Button("Add");
@@ -75,24 +75,24 @@ public class MainApp extends Application {
 	}
 
 	private class Controller {
-		private ArrayList<Person> persons;
+		private ArrayList<PersonDemo> personDemos;
 
 		public Controller() {
 			initPersons();
 		}
 
 		private void initPersons() {
-			persons = new ArrayList<Person>();
-			persons.add(new Person("Jens", "Jensen", "jj@eaaa.dk"));
-			persons.add(new Person("Hans", "Hansen", "hh@eaaa.dk"));
-			persons.add(new Person("Pia", "Peters", "pp@eaaa.dk"));
+			personDemos = new ArrayList<PersonDemo>();
+			personDemos.add(new PersonDemo("Jens", "Jensen", "jj@eaaa.dk"));
+			personDemos.add(new PersonDemo("Hans", "Hansen", "hh@eaaa.dk"));
+			personDemos.add(new PersonDemo("Pia", "Peters", "pp@eaaa.dk"));
 		}
 
 		// -------------------------------------------------------------------------
 		// Selected item changed in lvwPersons
 
 		private void personsItemSelected() {
-			Person selected = lvwPersons.getSelectionModel().getSelectedItem();
+			PersonDemo selected = lvwPersons.getSelectionModel().getSelectedItem();
 			if (selected != null) {
 				txfName.setText(selected.toString());
 			} else {
@@ -106,9 +106,9 @@ public class MainApp extends Application {
 		private void addAction() {
 			String name = txfName.getText().trim();
 			if (name.length() > 0) {
-				Person p = new Person(name, "Hansen", "123@mail.com");
-				persons.add(p);
-				lvwPersons.getItems().setAll(persons);
+				PersonDemo p = new PersonDemo(name, "Hansen", "123@mail.com");
+				personDemos.add(p);
+				lvwPersons.getItems().setAll(personDemos);
 			} else {
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Add person");
@@ -122,9 +122,9 @@ public class MainApp extends Application {
 		private void deleteAction() {
 			int index = lvwPersons.getSelectionModel().getSelectedIndex();
 			if (index >= 0) {
-				persons.remove(index);
+				personDemos.remove(index);
 				txfName.clear();
-				lvwPersons.getItems().setAll(persons);
+				lvwPersons.getItems().setAll(personDemos);
 			} else {
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Delete person");

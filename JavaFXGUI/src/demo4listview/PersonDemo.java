@@ -1,12 +1,12 @@
 package demo4listview;
 
-public class Person
+public class PersonDemo
 {
     private String firstName;
     private String lastName;
     private String email;
 
-    public Person(String firstName, String lastName, String email)
+    public PersonDemo(String firstName, String lastName, String email)
     {
         this.firstName = firstName;
         this.lastName = lastName;
