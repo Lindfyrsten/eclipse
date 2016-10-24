@@ -30,23 +30,12 @@ public class PersonAdd extends Stage {
         Scene scene = new Scene(pane);
         setScene(scene);
     }
-    
-    // ===========================================================
-    // Constants
-    // ===========================================================
-    
+
     private TextField txfName;
     private TextField txfTitle;
     private CheckBox checkBox;
     private Person actualPerson = null;
 
-    // ===========================================================
-    // Fields
-    // ===========================================================
-    
-    // ===========================================================
-    // Constructors
-    // ===========================================================
     private void initContent(GridPane pane) {
 
         pane.setPadding(new Insets(20));
@@ -81,13 +70,6 @@ public class PersonAdd extends Stage {
         btnOk.setOnAction(event -> okAction());
 
     }
-    // ===========================================================
-    // Getter & Setter
-    // ===========================================================
-
-    // ===========================================================
-    // Methods for/from SuperClass/Interfaces
-    // ===========================================================
 
     // ===========================================================
     // Methods
@@ -137,7 +119,4 @@ public class PersonAdd extends Stage {
         txfName.clear();
         txfTitle.clear();
     }
-    // ===========================================================
-    // Inner and Anonymous Classes
-    // ===========================================================
 }

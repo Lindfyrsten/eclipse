@@ -4,17 +4,17 @@ package modelfravaer;
  * @author Kristian
  */
 public class FravaersSystem {
-
+    
     /**
      * Summen af en elevs årlige fraværsdage
      */
     private int sum;
-
+    
     /**
      * Boolean der bestemmer om summen skal udskrives
      */
     private boolean udskrivSum = true;
-    
+
     /**
      * Frafaldstallene udskrives på skærmen
      *
@@ -36,7 +36,7 @@ public class FravaersSystem {
                 else {
                     System.out.print(fravaer[row][col] + " |  ");
                 }
-                
+
             }
             System.out.println();
             System.out
@@ -44,7 +44,7 @@ public class FravaersSystem {
                     "_________________________________________________________________________");
         }
     }
-    
+
     /**
      * Returnerer det samlede antal fravaerdage over 12 måneder for eleven med
      * elevnr.
@@ -57,16 +57,16 @@ public class FravaersSystem {
         sum = 0;
         for (int col = 0; col < fravaer[elevNr - 1].length; col++) {
             sum += fravaer[elevNr - 1][col];
-
+            
         }
-
+        
         if (udskrivSum) {
             System.out.println("\nElev #" + elevNr + "'s årlige fraværsdage: " + sum);
         }
         return sum;
-
+        
     }
-
+    
     /**
      * Returnerer det gennemsnitlige antal fraværsdage pr måned for eleven med
      * elevNr.
@@ -81,7 +81,7 @@ public class FravaersSystem {
             + ((double) (samletFravaer(fravaer, elevNr)) / 12));
         udskrivSum = true;
     }
-
+    
     /**
      * Returnerer antallet af elever der ikke har haft fravær i de 12 måneder.
      *
@@ -92,7 +92,7 @@ public class FravaersSystem {
         udskrivSum = false;
         int nulFravaer = 0;
         for (int row = 0; row < fravaer.length; row++) {
-
+            
             samletFravaer(fravaer, row + 1);
             if (sum == 0) {
                 nulFravaer++;
@@ -101,7 +101,7 @@ public class FravaersSystem {
         System.out.println("\nAntal elever uden fravær over et år: " + nulFravaer);
         udskrivSum = true;
     }
-
+    
     /**
      * Returnerer elevNr for den elev der har haft mest fravær igennem de 12
      * måneder. Hvis flere elever har haft højst fravær, returneres elevnummer
@@ -124,7 +124,7 @@ public class FravaersSystem {
         System.out
             .println("\nEleven med mest fravær: Elev #" + row + " (" + mestFravaer + " dage)");
     }
-
+    
     /**
      * Registrerer at elenven med elevNr ikke har haft fravær i nogen af de 12
      * måneder.
@@ -135,7 +135,7 @@ public class FravaersSystem {
     public void nulstil(int[][] fravaer, int elevNr) {
         int col = 0;
         while (col < fravaer[elevNr - 1].length) {
-
+            
             fravaer[elevNr - 1][col] = 0;
             col++;
         }

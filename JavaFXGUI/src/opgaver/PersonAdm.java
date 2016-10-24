@@ -19,9 +19,6 @@ public class PersonAdm extends Application {
         Application.launch(args);
 
     }
-    // ===========================================================
-    // Constants
-    // ===========================================================
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -37,10 +34,6 @@ public class PersonAdm extends Application {
 
     }
 
-    // ===========================================================
-    // Fields
-    // ===========================================================
-    
     private ListView<Person> lvwPersons;
     private PersonAdd addPerson;
     
@@ -54,10 +47,6 @@ public class PersonAdm extends Application {
         pane.setHgap(10);
         pane.setVgap(10);
         
-//        Label lblNames = new Label("Names:");
-//        pane.add(lblNames, 0, 0);
-//        GridPane.setValignment(lblNames, VPos.TOP);
-        
         lvwPersons = new ListView<>();
         GridPane.setValignment(lvwPersons, VPos.CENTER);
         pane.add(lvwPersons, 0, 0);
@@ -65,29 +54,12 @@ public class PersonAdm extends Application {
         lvwPersons.setPrefSize(300, 200);
         lvwPersons.getItems().setAll(controller.persons);
 
-//        ChangeListener<Person> listener =
-//            (ov, oldPerson, newPerson) -> this.controller.personsItemSelected();
-//        lvwPersons.getSelectionModel().selectedItemProperty().addListener(listener);
-
         Button btnAdd = new Button("Add");
         pane.add(btnAdd, 2, 0);
         btnAdd.setOnAction(event -> controller.addAction());
 
     }
-    // ===========================================================
-    // Getter & Setter
-    // ===========================================================
-
-    // ===========================================================
-    // Methods for/from SuperClass/Interfaces
-    // ===========================================================
-
-    // ===========================================================
-    // Methods
-    // ===========================================================
-    // ===========================================================
-    // Inner and Anonymous Classes
-    // ===========================================================
+    
     private class Controller {
         private ArrayList<Person> persons;
 
@@ -101,16 +73,6 @@ public class PersonAdm extends Application {
 
         }
 
-//        private void personsItemSelected() {
-//            Person selected = lvwPersons.getSelectionModel().getSelectedItem();
-//            if (selected != null) {
-//                txfName.setText(selected.toString());
-//            }
-//            else {
-//                txfName.clear();
-//            }
-//        }
-//
         private void addAction() {
 
             window.hide();
