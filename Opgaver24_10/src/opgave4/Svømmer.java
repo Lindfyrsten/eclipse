@@ -106,9 +106,8 @@ public class Svømmer {
         double avgTime = 0;
         double worstTime = tider.get(0);
         for (int i = 0; i < tider.size(); i++) {
-            if (tider.get(i) > worstTime) {
-                worstTime = tider.get(i);
-            }
+            
+            worstTime = Math.max(worstTime, tider.get(i));
             avgTime += tider.get(i);
         }
         
