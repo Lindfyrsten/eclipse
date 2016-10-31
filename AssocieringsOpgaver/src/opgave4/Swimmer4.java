@@ -69,7 +69,9 @@ public class Swimmer4 {
      * no group.
      */
     public TrainingPlan4 getPlan() {
+
         return plan;
+
     }
     
     /**
