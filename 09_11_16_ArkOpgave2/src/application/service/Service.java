@@ -3,6 +3,7 @@ package application.service;
 import java.util.ArrayList;
 
 import application.model.Company;
+import application.model.Costumer;
 import application.model.Employee;
 import storage.Storage;
 
@@ -96,7 +97,39 @@ public class Service {
     }
     
     // -------------------------------------------------------------------------
+    public static ArrayList<Costumer> getCostumers() {
+        return Storage.getCostumers();
+    }
+
+    public static Costumer createCostumer(String firstName, String lastName, int age) {
+        Costumer costumer = new Costumer(firstName, lastName, age);
+        return costumer;
+    }
     
+    public static void deleteCostumer(Costumer costumer) {
+        Storage.removeCostumer(costumer);
+    }
+    
+    public static void addCostumerToCompany(String firstName, String lastName, int age,
+        Company company) {
+
+        Costumer costumer = new Costumer(firstName, lastName, age);
+        company.addCostumer(costumer);
+
+    }
+
+    public static void removeCostumerFromCompany(Costumer costumer, Company company) {
+        company.removeCostumer(costumer);
+    }
+    
+    public static void updateCostumer(Costumer costumer, String firstName, String lastName,
+        int age) {
+        costumer.setFirstName(firstName);
+        costumer.setLastName(lastName);
+        costumer.setAge(age);
+    }
+    
+    // -------------------------------------------------------------------------
     /**
      * Initializes the storage with some objects.
      */
@@ -111,6 +144,9 @@ public class Service {
         Service.createEmployee("George Down", 150, 1810, c2);
         
         Service.createEmployee("Rita Uphill", 300, 2015);
+
+        Service.addCostumerToCompany("Donald", "Trump", 60, c1);
+        Service.addCostumerToCompany("Hillary", "Clinton", 54, c1);
     }
     
     public static void init() {
