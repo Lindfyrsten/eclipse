@@ -106,7 +106,7 @@ public class Tilmeldning {
                 sum += hotel.getDagsPrisDobbelt();
             }
             for (HotelTilvalg tv : tilvalg) {
-                sum += tv.getDagsPris();
+                sum += tv.getPris();
             }
         }
         sum = sum * slut.compareTo(start); // alle ovenstående priser er dagspriser.

@@ -1,12 +1,20 @@
 package guifx;
 
+import java.util.Optional;
+
+import application.model.Hotel;
 import application.model.Konference;
+import application.model.Tilmeldning;
+import application.service.Service;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
@@ -25,7 +33,7 @@ public class KonferencePane extends Stage {
     // ===========================================================
     private TextField txfTitel, txfPris;
     private ListView<Konference> lvwKonferencer;
-    private TextArea txaDeltagere, txaHotels, txaUdflugter;
+    private TextArea txaTilmeldninger, txaHotels, txaUdflugter;
 
     // ===========================================================
     // Constructors
@@ -72,10 +80,10 @@ public class KonferencePane extends Stage {
         pane.add(lblDeltagere, 1, 3);
         GridPane.setValignment(lblDeltagere, VPos.BASELINE);
         
-        txaDeltagere = new TextArea();
-        pane.add(txaDeltagere, 2, 3);
-        txaDeltagere.setPrefSize(200, 100);
-        txaDeltagere.setEditable(false);
+        txaTilmeldninger = new TextArea();
+        pane.add(txaTilmeldninger, 2, 3);
+        txaTilmeldninger.setPrefSize(200, 100);
+        txaTilmeldninger.setEditable(false);
         
         Label lblHotels = new Label("Hoteller:");
         pane.add(lblHotels, 1, 4);
@@ -92,19 +100,19 @@ public class KonferencePane extends Stage {
 
         Button btnCreate = new Button("Opret konference");
         hbxButtons.getChildren().add(btnCreate);
-        btnCreate.setOnAction(event -> createKonference());
+        btnCreate.setOnAction(event -> createAction());
 
         Button btnUpdate = new Button("Opdater");
         hbxButtons.getChildren().add(btnUpdate);
-        btnUpdate.setOnAction(event -> updateKonference());
+        btnUpdate.setOnAction(event -> updateAction());
 
         Button btnDelete = new Button("Slet");
         hbxButtons.getChildren().add(btnDelete);
-        btnDelete.setOnAction(event -> deleteKonference());
+        btnDelete.setOnAction(event -> deleteAction());
 
         Button btnCancel = new Button("Annuller");
         hbxButtons.getChildren().add(btnCancel);
-        btnCancel.setOnAction(event -> cancel());
+        btnCancel.setOnAction(event -> cancelAction());
 
         if (lvwKonferencer.getItems().size() > 0) {
             lvwKonferencer.getSelectionModel().select(0);
@@ -116,19 +124,48 @@ public class KonferencePane extends Stage {
     // Methods
     // ===========================================================
     
-    private void createKonference() {
-        hide();
+    private void createAction() {
+        KonferenceWindow kow = new KonferenceWindow();
+        kow.showAndWait();
+        
+        lvwKonferencer.getItems().setAll(Service.getKonferencer());
+        int index = lvwKonferencer.getItems().size() - 1;
+        lvwKonferencer.getSelectionModel().select(index);
     }
 
-    private void updateKonference() {
-
+    private void updateAction() {
+        Konference konference = lvwKonferencer.getSelectionModel().getSelectedItem();
+        if (konference == null) {
+            return;
+        }
+        else {
+            KonferenceWindow kof = new KonferenceWindow(konference);
+            kof.showAndWait();
+            
+            lvwKonferencer.getItems().setAll(Service.getKonferencer());
+            lvwKonferencer.getSelectionModel().select(konference);
+        }
     }
 
-    private void deleteKonference() {
+    private void deleteAction() {
+        Konference konference = lvwKonferencer.getSelectionModel().getSelectedItem();
+        if (konference == null) {
+            return;
+        }
+        else {
+            Alert alert = new Alert(AlertType.CONFIRMATION);
+            alert.setTitle("Slet Konference");
+            alert.setContentText("Er du sikker?");
+            Optional<ButtonType> result = alert.showAndWait();
 
+            if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
+                Service.deleteKonference(konference);
+                lvwKonferencer.getItems().setAll(Service.getKonferencer());
+            }
+        }
     }
     
-    private void cancel() {
+    private void cancelAction() {
         hide();
     }
     
@@ -142,28 +179,30 @@ public class KonferencePane extends Stage {
             txfTitel.setText(konference.getTitel());
             txfPris.setText("" + konference.getPris());
             
-//            StringBuilder sb = new StringBuilder();
-//            for (Deltager d : konference.getDeltagere()) {
-//                sb.append(d.getNavn() + "\n");
-//            }
-//            StringBuilder sb1 = new StringBuilder();
-//            for (Hotel h : konference.getHoteller()) {
-//                sb1.append(h.getNavn() + "\n");
-//            }
+            StringBuilder sb = new StringBuilder();
+            for (Tilmeldning t : konference.getTilmeldninger()) {
+
+                sb.append(t.getDeltager().toString() + "\n");
+            }
+            StringBuilder sb1 = new StringBuilder();
+            for (Hotel h : konference.getHoteller()) {
+                sb1.append(h.getNavn() + "\n");
+            }
 //
 //            StringBuilder sb2 = new StringBuilder();
 //            for (Udflugt u : konference.getUdflugter()) {
 //                sb2.append(u.getNavn() + "\n");
 //            }
-//            txaDeltagere.setText(sb.toString());
-//            txaHotels.setText(sb1.toString());
+            txaTilmeldninger.setText(sb.toString());
+            txaHotels.setText(sb1.toString());
 //            txaUdflugter.setText(sb2.toString());
 
         }
         else {
             txfTitel.clear();
-            txaDeltagere.clear();
-//            txaHotels.clear();
+            txfPris.clear();
+            txaTilmeldninger.clear();
+            txaHotels.clear();
 //            txaUdflugter.clear();
         }
     }

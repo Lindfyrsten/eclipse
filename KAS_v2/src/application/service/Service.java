@@ -60,7 +60,7 @@ public class Service {
      * Henter alle konferencerne
      * @return
      */
-    public static ArrayList<Konference> getKonference() {
+    public static ArrayList<Konference> getKonferencer() {
         return Storage.getKonferencer();
     }
 
@@ -157,12 +157,16 @@ public class Service {
      * @param addresse
      * @return
      */
-    public static Hotel createHotel(String navn, String addresse, double enkelt, double dobbelt) {
-        Hotel hotel = new Hotel(navn, addresse, enkelt, dobbelt);
+    public static Hotel createHotel(String navn, String addresse, double enkelt, double dobbelt,
+        ArrayList<HotelTilvalg> tilvalg) {
+        Hotel hotel = new Hotel(navn, addresse, enkelt, dobbelt, tilvalg);
         Storage.addHotel(hotel);
         return hotel;
     }
     
+//    public static ArrayList<HotelTilvalg> getTilValg(){
+//        return tilvalg;
+//    }
     /**
      * Sletter hotel
      * @param hotel
@@ -179,11 +183,12 @@ public class Service {
      * @param rooms
      */
     public static void updateHotel(Hotel hotel, String navn, String addresse, double enkelt,
-        double dobbelt) {
+        double dobbelt, ArrayList<HotelTilvalg> tilvalg) {
         hotel.setNavn(navn);
         hotel.setAddresse(addresse);
         hotel.setDagsPrisEnkelt(enkelt);
         hotel.setDagsPrisDobbelt(dobbelt);
+        hotel.setTilvalg(tilvalg);
     }
     
     public static ArrayList<Hotel> getHotels() {
@@ -196,20 +201,19 @@ public class Service {
      * @param dagsPris
      * @return
      */
-    public static HotelTilvalg createTilvalg(String navn, int dagsPris) {
+    public static HotelTilvalg createTilvalg(String navn, double dagsPris) {
         HotelTilvalg tv = new HotelTilvalg(navn, dagsPris);
-        Storage.addTilvalg(tv);
         return tv;
-        
+
     }
 
     /**
      * Sletter tilvalg
      * @param tv
      */
-    public static void removeTilvalg(HotelTilvalg tv) {
-        Storage.removeTilvalg(tv);
-    }
+//    public static void removeTilvalg(HotelTilvalg tv) {
+//        Storage.removeTilvalg(tv);
+//    }
     
     /**
      * Opdaterer tilvalget
@@ -217,10 +221,10 @@ public class Service {
      * @param navn
      * @param dagsPris
      */
-    public static void updateTilvalg(HotelTilvalg tv, String navn, int dagsPris) {
-        tv.setNavn(navn);
-        tv.setDagsPris(dagsPris);
-    }
+//    public static void updateTilvalg(HotelTilvalg tv, String navn, int dagsPris) {
+//        tv.setNavn(navn);
+//        tv.setDagsPris(dagsPris);
+//    }
     
     // -------------------------------------------------------------------------
     
@@ -282,10 +286,13 @@ public class Service {
      * Initializes the storage with some objects.
      */
     public static void initStorage() {
+
+        ArrayList<HotelTilvalg> tilvalg = new ArrayList<>();
+
         Konference k1 = Service.createKonference("Klima ændring", 250);
         Konference k2 = Service.createKonference("Nano teknologi", 499);
-        Service.createHotel("Radison", "blabla2", 150, 250);
-        Service.createHotel("Ez living", "Dada 12", 99, 150);
+        Service.createHotel("Radison", "blabla2", 150, 250, tilvalg);
+        Service.createHotel("Ez living", "Dada 12", 99, 150, tilvalg);
         
         Service.createDeltager("Bob", 19, "Dalgas Avenue 21", "Danmark");
         Service.createDeltager("Finn", 50, "Boulevarden 16", "Norge");

@@ -16,7 +16,7 @@ public class TilmeldningsPane extends Stage {
     // ===========================================================
     // Fields
     // ===========================================================
-    
+
     // ===========================================================
     // Constructors
     // ===========================================================
@@ -24,9 +24,9 @@ public class TilmeldningsPane extends Stage {
 //        initStyle(StageStyle.UNDECORATED);
         initModality(Modality.APPLICATION_MODAL);
         GridPane pane = new GridPane();
-
+        
         Scene scene = new Scene(pane);
-        setTitle("Udflugt");
+        setTitle("Tilmeld Konference");
         setScene(scene);
         pane.setPadding(new Insets(20));
         pane.setHgap(10);
@@ -35,7 +35,7 @@ public class TilmeldningsPane extends Stage {
     // ===========================================================
     // Getter & Setter
     // ===========================================================
-    
+
     // ===========================================================
     // Methods
     // ===========================================================

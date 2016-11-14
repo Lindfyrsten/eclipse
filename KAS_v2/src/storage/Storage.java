@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import application.model.Deltager;
 import application.model.Firma;
 import application.model.Hotel;
-import application.model.HotelTilvalg;
 import application.model.Konference;
 import application.model.Udflugt;
 
@@ -17,7 +16,6 @@ public class Storage {
     private static ArrayList<Deltager> deltagere = new ArrayList<>();
     private static ArrayList<Hotel> hoteller = new ArrayList<>();
     private static ArrayList<Firma> firmaer = new ArrayList<>();
-    private static ArrayList<HotelTilvalg> tilvalg = new ArrayList<>();
     private static ArrayList<Udflugt> udflugter = new ArrayList<>();
 
     // ===========================================================
@@ -70,19 +68,6 @@ public class Storage {
     
     public static void removeFirma(Firma firma) {
         firmaer.remove(firma);
-    }
-    // ===========================================================
-    
-    public static ArrayList<HotelTilvalg> getTilvalg() {
-        return new ArrayList<>(tilvalg);
-    }
-    
-    public static void addTilvalg(HotelTilvalg tv) {
-        tilvalg.add(tv);
-    }
-
-    public static void removeTilvalg(HotelTilvalg tv) {
-        tilvalg.remove(tv);
     }
     
     // ===========================================================
