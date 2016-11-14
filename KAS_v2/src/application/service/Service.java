@@ -9,6 +9,7 @@ import application.model.Firma;
 import application.model.Hotel;
 import application.model.HotelTilvalg;
 import application.model.Konference;
+import application.model.Tilmeldning;
 import application.model.Udflugt;
 import storage.Storage;
 
@@ -16,7 +17,7 @@ import storage.Storage;
  * @author Kristian
  */
 public class Service {
-    
+
     /**
      * Opretter ny konference
      * @param titel
@@ -30,7 +31,7 @@ public class Service {
         Storage.addKonference(konference);
         return konference;
     }
-
+    
     /**
      * Sletter konferencen
      * @param konference
@@ -38,7 +39,7 @@ public class Service {
     public static void deleteKonference(Konference konference) {
         Storage.removeKonference(konference);
     }
-
+    
     /**
      * Opdaterer konferencen
      * @param konference
@@ -54,7 +55,7 @@ public class Service {
         konference.setStartDate(startDate);
         konference.setSlutDate(slutDate);
     }
-    
+
     /**
      * Henter alle konferencerne
      * @return
@@ -62,7 +63,7 @@ public class Service {
     public static ArrayList<Konference> getKonference() {
         return Storage.getKonferencer();
     }
-    
+
     /**
      * Opretter ny deltager
      * @param name
@@ -75,20 +76,20 @@ public class Service {
         Storage.addDeltager(deltager);
         return deltager;
     }
-
+    
     /**
      * Sletter deltageren
      * @param deltager
      */
     public static void deleteDeltager(Deltager deltager) {
-        
+
         Storage.removeDeltager(deltager);
     }
-
-    public static void addDeltagerToKonference(Deltager deltager, Konference konference) {
-        konference.addDeltager(deltager);
+    
+    public static void addTilmeldning(Tilmeldning tildmeldning, Konference konference) {
+        konference.addDeltager(tildmeldning);
     }
-
+    
     /**
      * Opdaterer deltager
      * @param deltager
@@ -99,7 +100,7 @@ public class Service {
         deltager.setNavn(name);
         deltager.setAlder(alder);
     }
-
+    
     /**
      * Henter deltagere
      * @return
@@ -107,7 +108,7 @@ public class Service {
     public static ArrayList<Deltager> getDeltagere() {
         return Storage.getDeltagere();
     }
-
+    
     /**
      * Opretter nyt firma
      * @param navn
@@ -120,7 +121,7 @@ public class Service {
         Storage.addFirma(firma);
         return firma;
     }
-    
+
     /**
      * Sletter firma
      * @param firma
@@ -128,7 +129,7 @@ public class Service {
     public static void deleteFirma(Firma firma) {
         Storage.removeFirma(firma);
     }
-    
+
     /**
      * Opdater firma
      * @param firma
@@ -141,7 +142,7 @@ public class Service {
         firma.setTlfNummer(tlfNr);
         firma.setAddresse(addresse);
     }
-
+    
     /**
      * Henter alle firmaer
      * @return
@@ -149,12 +150,11 @@ public class Service {
     public static ArrayList<Firma> getFirmaer() {
         return Storage.getFirmaer();
     }
-    
+
     /**
      * Opretter hotel
      * @param navn
      * @param addresse
-     * @param rooms
      * @return
      */
     public static Hotel createHotel(String navn, String addresse, double enkelt, double dobbelt) {
@@ -162,7 +162,7 @@ public class Service {
         Storage.addHotel(hotel);
         return hotel;
     }
-
+    
     /**
      * Sletter hotel
      * @param hotel
@@ -170,7 +170,7 @@ public class Service {
     public static void deleteHotel(Hotel hotel) {
         Storage.removeHotel(hotel);
     }
-    
+
     /**
      * Opdaterer hotel
      * @param hotel
@@ -185,11 +185,11 @@ public class Service {
         hotel.setDagsPrisEnkelt(enkelt);
         hotel.setDagsPrisDobbelt(dobbelt);
     }
-
+    
     public static ArrayList<Hotel> getHotels() {
         return Storage.getHoteller();
     }
-
+    
     /**
      * Opretter nyt tilvalg
      * @param navn
@@ -200,9 +200,9 @@ public class Service {
         HotelTilvalg tv = new HotelTilvalg(navn, dagsPris);
         Storage.addTilvalg(tv);
         return tv;
-
+        
     }
-    
+
     /**
      * Sletter tilvalg
      * @param tv
@@ -210,7 +210,7 @@ public class Service {
     public static void removeTilvalg(HotelTilvalg tv) {
         Storage.removeTilvalg(tv);
     }
-
+    
     /**
      * Opdaterer tilvalget
      * @param tv
@@ -221,9 +221,9 @@ public class Service {
         tv.setNavn(navn);
         tv.setDagsPris(dagsPris);
     }
-
+    
     // -------------------------------------------------------------------------
-
+    
     /**
      * Opretter udflugt
      * @param navn
@@ -236,7 +236,7 @@ public class Service {
         Storage.addUdflugt(udflugt);
         return udflugt;
     }
-
+    
     /**
      * Sletter udflugt
      * @param udflugt
@@ -244,7 +244,7 @@ public class Service {
     public static void removeUdflugt(Udflugt udflugt) {
         Storage.removeUdflugt(udflugt);
     }
-    
+
     /**
      * Opdaterer udflugt
      * @param udflugt
@@ -258,7 +258,26 @@ public class Service {
         udflugt.setPris(pris);
         udflugt.setDato(date);
     }
-    
+
+    public static String getOvernatninger(Hotel hotel) {
+        String output = "";
+        for (Deltager d : Storage.getDeltagere()) {
+            for (Tilmeldning t : d.getTilmeldninger()) {
+                if (t.getHotel() == hotel) {
+                    output = output + d.getNavn();
+                    if (t.getLedsagernavn() != null) {
+                        output = output + " (" + t.getLedsagernavn() + ")";
+                    }
+                    for (HotelTilvalg tv : t.getTilvalg()) {
+                        output = output + " " + tv.getNavn();
+                    }
+                    output = output + t.getStart().toString() + " " + t.getSlut().toString() + "\n";
+                }
+            }
+        }
+        return output;
+    }
+
     /**
      * Initializes the storage with some objects.
      */
@@ -267,16 +286,16 @@ public class Service {
         Konference k2 = Service.createKonference("Nano teknologi", 499);
         Service.createHotel("Radison", "blabla2", 150, 250);
         Service.createHotel("Ez living", "Dada 12", 99, 150);
-
+        
         Service.createDeltager("Bob", 19, "Dalgas Avenue 21", "Danmark");
         Service.createDeltager("Finn", 50, "Boulevarden 16", "Norge");
         Service.createDeltager("Peter", 54, "Green Street 192", "USA");
-
+        
     }
-    
+
     public static void init() {
-        
+
         initStorage();
-        
+
     }
 }

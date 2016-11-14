@@ -1,5 +1,7 @@
 package application.model;
 
+import java.util.ArrayList;
+
 public class Deltager {
     // ===========================================================
     // Fields
@@ -9,6 +11,7 @@ public class Deltager {
     private String addresse;
     private String nationalitet;
     private Firma firma;
+    private ArrayList<Tilmeldning> tilmeldninger;
     
     // ===========================================================
     // Constructors
@@ -62,6 +65,16 @@ public class Deltager {
     
     public void setFirma(Firma firma) {
         this.firma = firma;
+    }
+    
+    public void addTilmeldning(Tilmeldning t) {
+        if (!tilmeldninger.contains(t)) {
+            tilmeldninger.add(t);
+        }
+    }
+
+    public ArrayList<Tilmeldning> getTilmeldninger() {
+        return tilmeldninger;
     }
 
     // ===========================================================

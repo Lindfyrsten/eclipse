@@ -1,5 +1,6 @@
 package application.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class Tilmeldning {
@@ -14,14 +15,19 @@ public class Tilmeldning {
     private Deltager deltager;
     private ArrayList<HotelTilvalg> tilvalg = new ArrayList<>();
     private ArrayList<Udflugt> udflugter = new ArrayList<>();
+    private LocalDate start;
+    private LocalDate slut;
     
     // ===========================================================
     // Constructors
     // ===========================================================
     
-    public Tilmeldning(Deltager deltager, Konference konference) {
+    public Tilmeldning(Deltager deltager, Konference konference, LocalDate start, LocalDate slut) {
+        this.start = start;
+        this.slut = slut;
         this.deltager = deltager;
         this.konference = konference;
+        deltager.addTilmeldning(this);
 //        this.period = period;
     }
     // ===========================================================
@@ -71,6 +77,10 @@ public class Tilmeldning {
     public Deltager getDeltager() {
         return deltager;
     }
+    
+    public ArrayList<Udflugt> getUdflugter() {
+        return udflugter;
+    }
 
     // ===========================================================
     // Methods
@@ -85,7 +95,25 @@ public class Tilmeldning {
 
     public double samletPris() {
         double sum = 0;
-        
+        if (!foredragsholder) {
+            sum += konference.getPris();
+        }
+        if (hotel != null) {
+            if (ledsagernavn.isEmpty()) {
+                sum += hotel.getDagsPrisEnkelt();
+            }
+            else {
+                sum += hotel.getDagsPrisDobbelt();
+            }
+            for (HotelTilvalg tv : tilvalg) {
+                sum += tv.getDagsPris();
+            }
+        }
+        sum = sum * slut.compareTo(start); // alle ovenstående priser er dagspriser.
+
+        for (Udflugt u : udflugter) {
+            sum += u.getPris();
+        }
         return sum;
     }
     
@@ -94,5 +122,17 @@ public class Tilmeldning {
         this.udflugter.clear();
         this.tilvalg.clear();
         this.konference = null;
+    }
+    
+    public ArrayList<HotelTilvalg> getTilvalg() {
+        return tilvalg;
+    }
+
+    public LocalDate getStart() {
+        return start;
+    }
+
+    public LocalDate getSlut() {
+        return slut;
     }
 }
