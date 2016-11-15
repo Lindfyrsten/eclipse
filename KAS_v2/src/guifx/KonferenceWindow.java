@@ -3,15 +3,23 @@
  */
 package guifx;
 
+import java.time.LocalDate;
+
 import application.model.Konference;
 import application.service.Service;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -23,29 +31,32 @@ public class KonferenceWindow extends Stage {
     // Fields
     // ===========================================================
     private Konference konference;
-    private TextField txfTitel, txfPris;
+    private TextField txfTitel = new TextField(), txfPris = new TextField(),
+        txfStart = new TextField(), txfSlut = new TextField(), txfFrist = new TextField();
     private Label lblError;
-    
+    private CheckBox cbDato;
+
     // ===========================================================
     // Constructors
     // ===========================================================
-    public KonferenceWindow(Konference konference) {
-//      initStyle(StageStyle.UNDECORATED);
+    public KonferenceWindow(String title, Konference konference) {
+//        initStyle(StageStyle.UNDECORATED);
         initModality(Modality.APPLICATION_MODAL);
         GridPane pane = new GridPane();
         Scene scene = new Scene(pane);
         setScene(scene);
         this.konference = konference;
-        setTitle("Opdater konference");
         
-        initContent(pane);
+        setTitle(title);
 
+        initContent(pane);
+        
     }
     
-    public KonferenceWindow() {
-        this(null);
-        setTitle("Opret konference");
-//        initContent();
+    public KonferenceWindow(String title) {
+        this(title, null);
+        setTitle(title);
+        
     }
 
     // ===========================================================
@@ -53,47 +64,93 @@ public class KonferenceWindow extends Stage {
     // ===========================================================
     private void initContent(GridPane pane) {
         
-        pane.setPrefSize(400, 400);
+//        pane.setGridLinesVisible(true);
+//        pane.setPrefSize(400, 400);
         pane.setPadding(new Insets(10));
-        pane.setHgap(50);
-        pane.setVgap(10);
+        pane.setHgap(10);
+        pane.setVgap(20);
         
-        Label lblTitel = new Label("Titel");
-        Label lblPris = new Label("Pris");
-        txfTitel = new TextField();
-        txfPris = new TextField();
+        Label lblTitle = new Label(getTitle());
+        lblTitle.setTextFill(Color.GREY);
+        lblTitle.setFont(Font.font("Impact", 24));
+        pane.add(lblTitle, 0, 0, 2, 1);
+        GridPane.setHalignment(lblTitle, HPos.CENTER);
         
-        pane.add(lblTitel, 0, 0);
-        pane.add(txfTitel, 0, 1);
-        pane.add(lblPris, 0, 2);
-        pane.add(txfPris, 0, 3);
-        
-        Button btnCancel = new Button("Cancel");
-        pane.add(btnCancel, 0, 4);
-        GridPane.setHalignment(btnCancel, HPos.LEFT);
-        btnCancel.setOnAction(event -> cancelAction());
+        String[] str = { "Titel", "Pris", "Start dato", "Slut dato", "Tilmeldningsfrist" };
+        for (int i = 0; i < str.length; i++) {
 
+            Label lbl = new Label(str[i]);
+            pane.add(lbl, 0, i + 1);
+            
+        }
+
+        cbDato = new CheckBox("Dato (YYYY-MM-DD)");
+        pane.add(cbDato, 1, 6);
+        GridPane.setHalignment(cbDato, HPos.RIGHT);
+        VBox txfBox = new VBox(10);
+        txfBox.getChildren().addAll(txfTitel, txfPris, txfStart, txfSlut, txfFrist);
+        pane.add(txfBox, 1, 1, 1, 5);
         Button btnOK = new Button("OK");
-        pane.add(btnOK, 0, 4);
-        GridPane.setHalignment(btnOK, HPos.RIGHT);
+        Button btnCancel = new Button("Annuller");
+        btnOK.setPrefSize(75, 50);
+        btnCancel.setPrefSize(75, 50);
+        HBox btnBox = new HBox(20);
+        pane.add(btnBox, 0, 7, 2, 1);
+        btnBox.getChildren().addAll(btnOK, btnCancel);
+        btnBox.setAlignment(Pos.BASELINE_CENTER);
+        cbDato.setOnAction(event -> cbDato());
+        
+        btnCancel.setOnAction(event -> cancelAction());
+        
         btnOK.setOnAction(event -> okAction());
 
         lblError = new Label();
-        pane.add(lblError, 0, 5);
+        pane.add(lblError, 0, 8);
         lblError.setStyle("-fx-text-fill: red");
-
+        
         initControls();
         
     }
-    
+
+    private void cbDato() {
+        if (cbDato.isSelected()) {
+            txfStart.setDisable(false);
+            txfSlut.setDisable(false);
+            txfFrist.setDisable(false);
+        }
+        else {
+            txfStart.clear();
+            txfStart.setDisable(true);
+            txfSlut.clear();
+            txfSlut.setDisable(true);
+            txfFrist.clear();
+            txfFrist.setDisable(true);
+
+        }
+    }
+
     private void initControls() {
         if (konference != null) {
             txfTitel.setText(konference.getTitel());
             txfPris.setText("" + konference.getPris());
+            if (konference.getStartDate() != null) {
+                cbDato.setSelected(true);
+                cbDato();
+                txfStart.setText("" + konference.getStartDate());
+                txfSlut.setText("" + konference.getSlutDate());
+                txfFrist.setText("" + konference.getTilmeldningsfrist());
+                
+            }
+            else {
+                cbDato.setSelected(false);
+                cbDato();
+            }
         }
         else {
+            
             txfTitel.clear();
             txfPris.clear();
+            cbDato();
         }
     }
     
@@ -102,10 +159,29 @@ public class KonferenceWindow extends Stage {
     }
     
     private void okAction() {
+        
         String titel = txfTitel.getText().trim();
-        if (titel.length() == 0) {
-            lblError.setText("Titel er tom");
-            return;
+        String start = txfStart.getText().trim();
+        String slut = txfSlut.getText().trim();
+        String frist = txfFrist.getText().trim();
+
+        if (cbDato.isSelected()) {
+            if (titel.length() == 0) {
+                lblError.setText("Titel er tom");
+                return;
+            }
+            if (start.length() == 0) {
+                lblError.setText("Start dato er tom");
+                return;
+            }
+            if (slut.length() == 0) {
+                lblError.setText("Slut dato er tom");
+                return;
+            }
+            if (frist.length() == 0) {
+                lblError.setText("Tilmeldningsfrist er tom");
+                return;
+            }
         }
         
         double pris = -1;
@@ -121,11 +197,28 @@ public class KonferenceWindow extends Stage {
         }
         
         // Call service methods
-        if (konference != null) {
-            Service.updateKonference(konference, titel, pris, null, null);
+        
+        if (cbDato.isSelected()) {
+
+            if (konference != null) {
+                Service.updateKonference(konference, titel, pris,
+                    LocalDate.parse(start),
+                    LocalDate.parse(slut),
+                    LocalDate.parse(frist));
+            }
+            else {
+                Service.createKonference(titel, pris, LocalDate.parse(start),
+                    LocalDate.parse(slut),
+                    LocalDate.parse(frist));
+            }
         }
         else {
-            Service.createKonference(titel, pris);
+            if (konference != null) {
+                Service.updateKonference(konference, titel, pris);
+            }
+            else {
+                Service.createKonference(titel, pris);
+            }
         }
         
         hide();

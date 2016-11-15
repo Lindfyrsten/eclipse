@@ -10,6 +10,7 @@ import application.model.Hotel;
 import application.model.HotelTilvalg;
 import application.service.Service;
 import javafx.beans.value.ChangeListener;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -23,6 +24,8 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -66,7 +69,10 @@ public class HotelPane extends Stage {
         ChangeListener<Hotel> listener = (ov, oldHotel, newHotel) -> selectedHotelChanged();
         lvwHotels.getSelectionModel().selectedItemProperty().addListener(listener);
         
-        Label lblHoteller = new Label("Hoteller");
+        Label lblTitle = new Label("Hotel Management:");
+        lblTitle.setTextFill(Color.GREY);
+        lblTitle.setFont(Font.font("Impact", 24));
+        GridPane.setHalignment(lblTitle, HPos.CENTER);
         Label lblNavn = new Label("Navn:");
         Label lblAddresse = new Label("Addresse");
         Label lblEnkelt = new Label("Enkelt værelse");
@@ -111,8 +117,8 @@ public class HotelPane extends Stage {
         btnDelete.setOnAction(event -> deleteAction());
         btnCancel.setOnAction(event -> cancelAction());
         
+        pane.add(lblTitle, 0, 0, 5, 1);
         pane.add(lvwHotels, 0, 1, 1, 5);
-        pane.add(lblHoteller, 0, 0);
         pane.add(lblNavn, 1, 1);
         pane.add(txfName, 2, 1);
         pane.add(lblAddresse, 1, 2);

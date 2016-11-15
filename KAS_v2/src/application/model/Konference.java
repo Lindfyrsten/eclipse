@@ -8,7 +8,6 @@ public class Konference {
     // Fields
     // ===========================================================
     private String titel;
-    private String kortBeskrivelse;
     private LocalDate startDate;
     private LocalDate slutDate;
     private double pris;
@@ -24,6 +23,16 @@ public class Konference {
         this.titel = titel;
         this.pris = pris;
     }
+
+    public Konference(String titel, double pris, LocalDate startDate, LocalDate slutDate,
+        LocalDate tilmeldningsfrist) {
+        this.titel = titel;
+        this.pris = pris;
+        this.startDate = startDate;
+        this.slutDate = slutDate;
+        this.tilmeldningsfrist = tilmeldningsfrist;
+
+    }
     // ===========================================================
     // Getter & Setter
     // ===========================================================
@@ -34,14 +43,6 @@ public class Konference {
 
     public void setTitel(String titel) {
         this.titel = titel;
-    }
-
-    public String getKortBeskrivelse() {
-        return kortBeskrivelse;
-    }
-
-    public void setKortBeskrivelse(String kortBeskrivelse) {
-        this.kortBeskrivelse = kortBeskrivelse;
     }
 
     public LocalDate getStartDate() {

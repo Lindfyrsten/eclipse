@@ -32,6 +32,13 @@ public class Service {
         return konference;
     }
     
+    public static Konference createKonference(String titel, double pris, LocalDate startDate,
+        LocalDate slutDate, LocalDate frist) {
+        Konference konference = new Konference(titel, pris, startDate, slutDate, frist);
+        Storage.addKonference(konference);
+        return konference;
+    }
+    
     /**
      * Sletter konferencen
      * @param konference
@@ -49,11 +56,17 @@ public class Service {
      * @param slutDate
      */
     public static void updateKonference(Konference konference, String titel, double pris,
-        LocalDate startDate, LocalDate slutDate) {
+        LocalDate startDate, LocalDate slutDate, LocalDate frist) {
         konference.setTitel(titel);
         konference.setPris(pris);
         konference.setStartDate(startDate);
         konference.setSlutDate(slutDate);
+        konference.setTilmeldningsfrist(frist);
+    }
+
+    public static void updateKonference(Konference konference, String titel, double pris) {
+        konference.setTitel(titel);
+        konference.setPris(pris);
     }
 
     /**
@@ -63,7 +76,22 @@ public class Service {
     public static ArrayList<Konference> getKonferencer() {
         return Storage.getKonferencer();
     }
+    
+    public static ArrayList<Konference> tilgængeligeKonferencer() {
+        ArrayList<Konference> konf = new ArrayList<>();
+        for (Konference k : Storage.getKonferencer()) {
+            if (k.getStartDate() != null && k.getStartDate().isAfter(LocalDate.now())) {
+                konf.add(k);
+            }
+        }
+        return konf;
 
+    }
+
+//    public static void addDeltagerToKonference(Deltager deltager, Konference konference) {
+//        konference.addDeltager(deltager);
+//    }
+    
     /**
      * Opretter ny deltager
      * @param name
@@ -71,8 +99,8 @@ public class Service {
      * @return
      */
     public static Deltager createDeltager(String name, int alder, String addresse,
-        String nationalitet) {
-        Deltager deltager = new Deltager(name, alder, addresse, nationalitet);
+        String land, int tlfNr) {
+        Deltager deltager = new Deltager(name, alder, addresse, land, tlfNr);
         Storage.addDeltager(deltager);
         return deltager;
     }
@@ -96,9 +124,14 @@ public class Service {
      * @param name
      * @param alder
      */
-    public static void updateDeltager(Deltager deltager, String name, int alder) {
+    public static void updateDeltager(Deltager deltager, String name, int alder, String addresse,
+        String land, int tlfNr) {
         deltager.setNavn(name);
         deltager.setAlder(alder);
+        deltager.setAddresse(addresse);
+        deltager.setLand(land);
+        deltager.setTlfNr(tlfNr);
+        
     }
     
     /**
@@ -207,25 +240,6 @@ public class Service {
 
     }
 
-    /**
-     * Sletter tilvalg
-     * @param tv
-     */
-//    public static void removeTilvalg(HotelTilvalg tv) {
-//        Storage.removeTilvalg(tv);
-//    }
-    
-    /**
-     * Opdaterer tilvalget
-     * @param tv
-     * @param navn
-     * @param dagsPris
-     */
-//    public static void updateTilvalg(HotelTilvalg tv, String navn, int dagsPris) {
-//        tv.setNavn(navn);
-//        tv.setDagsPris(dagsPris);
-//    }
-    
     // -------------------------------------------------------------------------
     
     /**
@@ -282,6 +296,20 @@ public class Service {
         return output;
     }
 
+    public static Deltager findDeltager(String tlfNr) {
+        Deltager deltager = null;
+        int i = 0;
+        boolean keepSearching = true;
+        while (keepSearching && i < Storage.getDeltagere().size()) {
+            if (Integer.toString(Storage.getDeltagere().get(i).getTlfNr()).equals(tlfNr)) {
+                deltager = Storage.getDeltagere().get(i);
+                keepSearching = false;
+            }
+            i++;
+        }
+        return deltager;
+    }
+
     /**
      * Initializes the storage with some objects.
      */
@@ -291,12 +319,14 @@ public class Service {
 
         Konference k1 = Service.createKonference("Klima ændring", 250);
         Konference k2 = Service.createKonference("Nano teknologi", 499);
+        Konference k3 = Service.createKonference("Fremtidens energi", 799,
+            LocalDate.of(2017, 01, 7), LocalDate.of(2017, 01, 9), LocalDate.of(2017, 01, 7));
         Service.createHotel("Radison", "blabla2", 150, 250, tilvalg);
         Service.createHotel("Ez living", "Dada 12", 99, 150, tilvalg);
         
-        Service.createDeltager("Bob", 19, "Dalgas Avenue 21", "Danmark");
-        Service.createDeltager("Finn", 50, "Boulevarden 16", "Norge");
-        Service.createDeltager("Peter", 54, "Green Street 192", "USA");
+        Service.createDeltager("Bob", 19, "Dalgas Avenue 21", "Danmark", 1);
+        Service.createDeltager("Finn", 50, "Boulevarden 16", "Norge", 2);
+        Service.createDeltager("Peter", 54, "Green Street 192", "USA", 3);
         
     }
 

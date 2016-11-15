@@ -6,22 +6,21 @@ public class Deltager {
     // ===========================================================
     // Fields
     // ===========================================================
-    private String navn;
-    private int alder;
-    private String addresse;
-    private String nationalitet;
+    private String navn, addresse, land;
+    private int alder, tlfNr;
     private Firma firma;
     private ArrayList<Tilmeldning> tilmeldninger;
     
     // ===========================================================
     // Constructors
     // ===========================================================
-    public Deltager(String navn, int alder, String addresse, String nationalitet) {
-
+    public Deltager(String navn, int alder, String addresse, String land, int tlfNr) {
+        
         this.navn = navn;
         this.alder = alder;
         this.addresse = addresse;
-        this.nationalitet = nationalitet;
+        this.land = land;
+        this.tlfNr = tlfNr;
     }
     
     // ===========================================================
@@ -51,14 +50,22 @@ public class Deltager {
         this.addresse = addresse;
     }
     
-    public String getNationalitet() {
-        return nationalitet;
+    public String getLand() {
+        return land;
+    }
+
+    public void setLand(String land) {
+        this.land = land;
     }
     
-    public void setNationalitet(String nationalitet) {
-        this.nationalitet = nationalitet;
+    public int getTlfNr() {
+        return tlfNr;
     }
     
+    public void setTlfNr(int tlfNr) {
+        this.tlfNr = tlfNr;
+    }
+
     public Firma getFirma() {
         return firma;
     }
@@ -67,12 +74,6 @@ public class Deltager {
         this.firma = firma;
     }
     
-    public void addTilmeldning(Tilmeldning t) {
-        if (!tilmeldninger.contains(t)) {
-            tilmeldninger.add(t);
-        }
-    }
-
     public ArrayList<Tilmeldning> getTilmeldninger() {
         return tilmeldninger;
     }
@@ -80,6 +81,11 @@ public class Deltager {
     // ===========================================================
     // Methods
     // ===========================================================
+    public void addTilmeldning(Tilmeldning t) {
+        if (!tilmeldninger.contains(t)) {
+            tilmeldninger.add(t);
+        }
+    }
     
     @Override
     public String toString() {
