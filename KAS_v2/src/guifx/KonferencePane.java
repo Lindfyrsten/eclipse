@@ -3,7 +3,6 @@ package guifx;
 import java.util.Optional;
 
 import application.model.Konference;
-import application.model.Tilmeldning;
 import application.service.Service;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.HPos;
@@ -29,14 +28,14 @@ import javafx.stage.StageStyle;
 import storage.Storage;
 
 public class KonferencePane extends Stage {
-    
+
     // ===========================================================
     // Fields
     // ===========================================================
     private TextField txfTitel, txfPris, txfStartDate, txfSlutDate, txfTilmeldningsfrist;
     private ListView<Konference> lvwKonferencer;
     private TextArea txaTilmeldninger, txaUdflugter;
-    
+
     // ===========================================================
     // Constructors
     // ===========================================================
@@ -44,22 +43,22 @@ public class KonferencePane extends Stage {
         initStyle(StageStyle.UNDECORATED);
         initModality(Modality.APPLICATION_MODAL);
         GridPane pane = new GridPane();
-
+        
         Scene scene = new Scene(pane);
         setTitle("Konference");
         setScene(scene);
         pane.setPadding(new Insets(20));
         pane.setHgap(10);
         pane.setVgap(10);
-
+        
         lvwKonferencer = new ListView<>();
         lvwKonferencer.setPrefSize(200, 200);
         lvwKonferencer.getItems().setAll(Storage.getKonferencer());
-        
+
         ChangeListener<Konference> konferenceListener =
             (ov, oldKonf, newKonference) -> selectionChanged();
         lvwKonferencer.getSelectionModel().selectedItemProperty().addListener(konferenceListener);
-
+        
         Label lblTitle = new Label("Konference Management:");
         lblTitle.setTextFill(Color.GREY);
         lblTitle.setFont(Font.font("Impact", 24));
@@ -71,7 +70,7 @@ public class KonferencePane extends Stage {
         Label lblStartDate = new Label("Start:");
         Label lblSlutDate = new Label("Slut:");
         Label lblFrist = new Label("Tilmeldningsfrist:");
-        
+
         txfTitel = new TextField();
         txfTitel.setEditable(false);
         txfPris = new TextField();
@@ -91,7 +90,7 @@ public class KonferencePane extends Stage {
         txfTilmeldningsfrist.setEditable(false);
         txfTilmeldningsfrist.setMaxWidth(80);
         txfTilmeldningsfrist.setDisable(true);
-
+        
 //        pane.setGridLinesVisible(true);
         pane.add(lblTitle, 0, 0, 3, 1);
         pane.add(lvwKonferencer, 0, 1, 1, 5);
@@ -103,12 +102,12 @@ public class KonferencePane extends Stage {
         pane.add(txaTilmeldninger, 2, 3);
         pane.add(lblFrist, 1, 5);
         pane.add(txfTilmeldningsfrist, 2, 5);
-        
+
         Button btnCreate = new Button("Opret konference");
         Button btnUpdate = new Button("Opdater");
         Button btnDelete = new Button("Slet");
         Button btnCancel = new Button("Annuller");
-
+        
         HBox hbxDates = new HBox(20);
         pane.add(hbxDates, 1, 4, 2, 1);
         hbxDates.getChildren().addAll(lblStartDate, txfStartDate, lblSlutDate, txfSlutDate);
@@ -116,35 +115,35 @@ public class KonferencePane extends Stage {
         pane.add(hbxButtons, 0, 6, 3, 1);
         hbxButtons.setPadding(new Insets(10, 0, 0, 0));
         hbxButtons.setAlignment(Pos.BASELINE_CENTER);
-        
+
         hbxButtons.getChildren().addAll(btnCreate, btnUpdate, btnDelete, btnCancel);
         btnCreate.setOnAction(event -> createAction());
-        
+
         btnUpdate.setOnAction(event -> updateAction());
-        
+
         btnDelete.setOnAction(event -> deleteAction());
-        
+
         btnCancel.setOnAction(event -> cancelAction());
-        
+
         if (lvwKonferencer.getItems().size() > 0) {
             lvwKonferencer.getSelectionModel().select(0);
         }
-        
+
     }
-    
+
     // ===========================================================
     // Methods
     // ===========================================================
-
+    
     private void createAction() {
         KonferenceWindow kow = new KonferenceWindow("Opret Konference");
         kow.showAndWait();
-
+        
         lvwKonferencer.getItems().setAll(Service.getKonferencer());
         int index = lvwKonferencer.getItems().size() - 1;
         lvwKonferencer.getSelectionModel().select(index);
     }
-    
+
     private void updateAction() {
         Konference konference = lvwKonferencer.getSelectionModel().getSelectedItem();
         if (konference == null) {
@@ -153,12 +152,12 @@ public class KonferencePane extends Stage {
         else {
             KonferenceWindow kof = new KonferenceWindow("Opdater Konference", konference);
             kof.showAndWait();
-
+            
             lvwKonferencer.getItems().setAll(Service.getKonferencer());
             lvwKonferencer.getSelectionModel().select(konference);
         }
     }
-    
+
     private void deleteAction() {
         Konference konference = lvwKonferencer.getSelectionModel().getSelectedItem();
         if (konference == null) {
@@ -169,29 +168,38 @@ public class KonferencePane extends Stage {
             alert.setTitle("Slet Konference");
             alert.setContentText("Er du sikker?");
             Optional<ButtonType> result = alert.showAndWait();
-            
+
             if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
                 Service.deleteKonference(konference);
                 lvwKonferencer.getItems().setAll(Service.getKonferencer());
             }
         }
     }
-
+    
     private void cancelAction() {
         hide();
     }
-
+    
     private void selectionChanged() {
         updateControls();
     }
-
+    
     public void updateControls() {
+        
         Konference konference = lvwKonferencer.getSelectionModel().getSelectedItem();
+        System.out.println(konference.printTilmeldninger());
         if (konference != null) {
             txfTitel.setText(konference.getTitel());
             txfPris.setText("" + konference.getPris());
+            
+            if (konference.getTilmeldninger() != null) {
+                txaTilmeldninger.setText(konference.printTilmeldninger());
+            }
+            else {
+                txaTilmeldninger.clear();
+            }
             if (konference.getStartDate() != null) {
-
+                
                 txfStartDate.setDisable(false);
                 txfSlutDate.setDisable(false);
                 txfTilmeldningsfrist.setDisable(false);
@@ -206,45 +214,9 @@ public class KonferencePane extends Stage {
                 txfStartDate.setDisable(true);
                 txfSlutDate.setDisable(true);
                 txfTilmeldningsfrist.setDisable(true);
-
-            }
-            
-            if (konference.getStartDate() != null) {
-                txfStartDate.setDisable(false);
-                txfStartDate.setText("" + konference.getStartDate());
-            }
-            
-            if (konference.getSlutDate() != null) {
-                txfSlutDate.setDisable(false);
-                txfSlutDate.setText("" + konference.getSlutDate());
-            }
-            if (konference.getTilmeldningsfrist() != null) {
-                txfTilmeldningsfrist.setDisable(false);
-                txfTilmeldningsfrist.setText("" + konference.getTilmeldningsfrist());
-            }
-            StringBuilder sb = new StringBuilder();
-            for (Tilmeldning t : konference.getTilmeldninger()) {
                 
-                sb.append(t.getDeltager().toString() + "\n");
             }
             
-//
-//            StringBuilder sb2 = new StringBuilder();
-//            for (Udflugt u : konference.getUdflugter()) {
-//                sb2.append(u.getNavn() + "\n");
-//            }
-            txaTilmeldninger.setText(sb.toString());
-//            txaUdflugter.setText(sb2.toString());
-        
-        }
-        else {
-            txfTitel.clear();
-            txfPris.clear();
-            txfStartDate.clear();
-            txfSlutDate.clear();
-            txaTilmeldninger.clear();
-            
-//            txaUdflugter.clear();
         }
     }
 }

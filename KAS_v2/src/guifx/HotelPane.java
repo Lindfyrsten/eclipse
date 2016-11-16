@@ -21,9 +21,11 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -40,6 +42,7 @@ public class HotelPane extends Stage {
     private TextField txfName, txfAddresse, txfEnkelt, txfDobbelt;
     private ListView<Hotel> lvwHotels;
     private CheckBox cbMad, cbBad, cbWiFi;
+    private TextArea txaGæster;
 
     // ===========================================================
     // Constructors
@@ -77,6 +80,7 @@ public class HotelPane extends Stage {
         Label lblAddresse = new Label("Addresse");
         Label lblEnkelt = new Label("Enkelt værelse");
         Label lblDobbelt = new Label("Dobbelt værelse");
+        Label lblGæster = new Label("Gæste liste:");
 
         txfName = new TextField();
         txfName.setPrefWidth(200);
@@ -87,6 +91,12 @@ public class HotelPane extends Stage {
         txfEnkelt.setEditable(false);
         txfDobbelt = new TextField();
         txfDobbelt.setEditable(false);
+        
+        txaGæster = new TextArea();
+        txaGæster.setPrefSize(200, 100);
+//        txaGæster.setMinWidth(100);
+//        txaGæster.setMinHeight(150);
+//        txaGæster.setMaxWidth(250);
 
         cbMad = new CheckBox();
         cbMad.setText("Mad");
@@ -107,11 +117,15 @@ public class HotelPane extends Stage {
         Button btnUpdate = new Button("Opdater");
         Button btnDelete = new Button("Slet");
         Button btnCancel = new Button("Annuller");
+
+        VBox vbxGæste = new VBox(10, lblGæster, txaGæster);
+//        vbxGæste.setAlignment(Pos.BASELINE_CENTER);
+        vbxGæste.setPadding(new Insets(10));
         
         HBox hbxButtons = new HBox(40);
         hbxButtons.setPadding(new Insets(10, 0, 0, 0));
-        hbxButtons.setAlignment(Pos.BASELINE_CENTER);
-        hbxButtons.getChildren().addAll(btnCreate, btnUpdate, btnDelete, btnCancel);
+        hbxButtons.setAlignment(Pos.TOP_CENTER);
+        hbxButtons.getChildren().addAll(btnCreate, btnUpdate, btnDelete);
         btnCreate.setOnAction(event -> createAction());
         btnUpdate.setOnAction(event -> updateAction());
         btnDelete.setOnAction(event -> deleteAction());
@@ -119,6 +133,7 @@ public class HotelPane extends Stage {
         
         pane.add(lblTitle, 0, 0, 5, 1);
         pane.add(lvwHotels, 0, 1, 1, 5);
+        pane.add(vbxGæste, 0, 6, 1, 2);
         pane.add(lblNavn, 1, 1);
         pane.add(txfName, 2, 1);
         pane.add(lblAddresse, 1, 2);
@@ -128,7 +143,10 @@ public class HotelPane extends Stage {
         pane.add(lblDobbelt, 1, 4);
         pane.add(txfDobbelt, 2, 4);
         pane.add(hbxCheckBox, 1, 5, 2, 1);
-        pane.add(hbxButtons, 0, 6, 3, 1);
+        pane.add(hbxButtons, 1, 6, 3, 1);
+        pane.add(btnCancel, 2, 7);
+        
+        GridPane.setHalignment(btnCancel, HPos.RIGHT);
         if (lvwHotels.getItems().size() > 0) {
             lvwHotels.getSelectionModel().select(0);
         }
@@ -195,6 +213,10 @@ public class HotelPane extends Stage {
 
         updateControls();
     }
+    
+    private void gæsteListe() {
+        
+    }
 
     public void updateControls() {
         cbMad.setSelected(false);
@@ -206,6 +228,7 @@ public class HotelPane extends Stage {
             txfAddresse.setText(hotel.getAddresse());
             txfEnkelt.setText("" + hotel.getDagsPrisEnkelt());
             txfDobbelt.setText("" + hotel.getDagsPrisDobbelt());
+            txaGæster.setText(Service.getOvernatninger(hotel));
 
             for (HotelTilvalg tv : hotel.getTilvalg()) {
                 if (tv.getNavn().equals("Mad")) {
@@ -228,6 +251,7 @@ public class HotelPane extends Stage {
             cbMad.setSelected(false);
             cbBad.setSelected(false);
             cbWiFi.setSelected(false);
+            txaGæster.clear();
         }
 
 //        initAllHotelList();

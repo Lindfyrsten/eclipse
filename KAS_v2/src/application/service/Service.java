@@ -88,8 +88,7 @@ public class Service {
 
     }
 
-//    public static void addDeltagerToKonference(Deltager deltager, Konference konference) {
-//        konference.addDeltager(deltager);
+//    public static void addTilmeldning(Tilmeldning tilmeldning, String ledsager,
 //    }
     
     /**
@@ -101,7 +100,10 @@ public class Service {
     public static Deltager createDeltager(String name, int alder, String addresse,
         String land, int tlfNr) {
         Deltager deltager = new Deltager(name, alder, addresse, land, tlfNr);
-        Storage.addDeltager(deltager);
+        
+        if (!Storage.getDeltagere().contains(deltager)) {
+            Storage.addDeltager(deltager);
+        }
         return deltager;
     }
     
@@ -112,10 +114,6 @@ public class Service {
     public static void deleteDeltager(Deltager deltager) {
 
         Storage.removeDeltager(deltager);
-    }
-    
-    public static void addTilmeldning(Tilmeldning tildmeldning, Konference konference) {
-        konference.addDeltager(tildmeldning);
     }
     
     /**
@@ -197,9 +195,6 @@ public class Service {
         return hotel;
     }
     
-//    public static ArrayList<HotelTilvalg> getTilValg(){
-//        return tilvalg;
-//    }
     /**
      * Sletter hotel
      * @param hotel
@@ -289,7 +284,9 @@ public class Service {
                     for (HotelTilvalg tv : t.getTilvalg()) {
                         output = output + " " + tv.getNavn();
                     }
-                    output = output + t.getStart().toString() + " " + t.getSlut().toString() + "\n";
+                    output =
+                        output + " (" + t.getStart().toString() + " - " + t.getSlut().toString()
+                            + ") \n";
                 }
             }
         }
@@ -314,19 +311,24 @@ public class Service {
      * Initializes the storage with some objects.
      */
     public static void initStorage() {
-
+        
         ArrayList<HotelTilvalg> tilvalg = new ArrayList<>();
-
+        
         Konference k1 = Service.createKonference("Klima ændring", 250);
         Konference k2 = Service.createKonference("Nano teknologi", 499);
         Konference k3 = Service.createKonference("Fremtidens energi", 799,
             LocalDate.of(2017, 01, 7), LocalDate.of(2017, 01, 9), LocalDate.of(2017, 01, 7));
         Service.createHotel("Radison", "blabla2", 150, 250, tilvalg);
         Service.createHotel("Ez living", "Dada 12", 99, 150, tilvalg);
+        Tilmeldning t = new Tilmeldning("Bob", 19, "Dalgas Avenue 21", "Danmark", 1, k3,
+            LocalDate.of(2017, 01, 9), LocalDate.of(2017, 01, 7), Storage.getHoteller().get(0));
+//        Tilmeldning t =
         
         Service.createDeltager("Bob", 19, "Dalgas Avenue 21", "Danmark", 1);
         Service.createDeltager("Finn", 50, "Boulevarden 16", "Norge", 2);
-        Service.createDeltager("Peter", 54, "Green Street 192", "USA", 3);
+//        Service.createDeltager("Peter", 54, "Green Street 192", "USA", 3);
+        System.out.println(Storage.getDeltagere());
+        Storage.getDeltagere().get(1).addTilmeldning(t);
         
     }
 

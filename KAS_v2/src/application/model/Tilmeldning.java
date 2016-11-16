@@ -3,13 +3,14 @@ package application.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
+import application.service.Service;
+
 public class Tilmeldning {
     // ===========================================================
     // Fields
     // ===========================================================
     private boolean foredragsholder = false;
     private String ledsagernavn;
-//    private LocalDate period;
     private Hotel hotel;
     private Konference konference;
     private Deltager deltager;
@@ -22,13 +23,15 @@ public class Tilmeldning {
     // Constructors
     // ===========================================================
     
-    public Tilmeldning(Deltager deltager, Konference konference, LocalDate start, LocalDate slut) {
+    public Tilmeldning(String navn, int alder, String addresse, String land, int tlfNr,
+        Konference konference, LocalDate start, LocalDate slut, Hotel hotel) {
+        this.deltager = Service.createDeltager(navn, alder, addresse, land, tlfNr);
         this.start = start;
         this.slut = slut;
-        this.deltager = deltager;
         this.konference = konference;
-        deltager.addTilmeldning(this);
-//        this.period = period;
+        this.hotel = hotel;
+        konference.addTilmeldning(this);
+
     }
     // ===========================================================
     // Getter & Setter
@@ -49,14 +52,6 @@ public class Tilmeldning {
     public void setLedsagernavn(String ledsagernavn) {
         this.ledsagernavn = ledsagernavn;
     }
-    
-//    public LocalDate getPeriod() {
-//        return period;
-//    }
-//
-//    public void setPeriod(LocalDate period) {
-//        this.period = period;
-//    }
     
     public Hotel getHotel() {
         return hotel;

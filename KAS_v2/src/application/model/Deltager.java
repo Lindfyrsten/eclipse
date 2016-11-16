@@ -9,7 +9,7 @@ public class Deltager {
     private String navn, addresse, land;
     private int alder, tlfNr;
     private Firma firma;
-    private ArrayList<Tilmeldning> tilmeldninger;
+    private ArrayList<Tilmeldning> tilmeldninger = new ArrayList<>();
     
     // ===========================================================
     // Constructors
