@@ -1,8 +1,9 @@
 package application.service;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import application.model.Deltager;
 import application.model.Firma;
@@ -11,6 +12,8 @@ import application.model.HotelTilvalg;
 import application.model.Konference;
 import application.model.Tilmeldning;
 import application.model.Udflugt;
+import javafx.scene.control.DateCell;
+import javafx.scene.control.DatePicker;
 import storage.Storage;
 
 /**
@@ -77,7 +80,12 @@ public class Service {
         return Storage.getKonferencer();
     }
     
+    /**
+     * Henter alle konferencer som starter efter lokal dato
+     * @return
+     */
     public static ArrayList<Konference> tilgængeligeKonferencer() {
+
         ArrayList<Konference> konf = new ArrayList<>();
         for (Konference k : Storage.getKonferencer()) {
             if (k.getStartDate() != null && k.getStartDate().isAfter(LocalDate.now())) {
@@ -87,9 +95,51 @@ public class Service {
         return konf;
 
     }
+    
+    /**
+     * Udskriver dato perioden for konferencen i tekst form
+     * @param konference
+     * @return
+     */
+    public static String printKonferencePeriod(Konference konference) {
+        String timePeriod = null;
+        String startDay = "" + konference.getStartDate().getDayOfMonth();
+        String startMonth =
+            konference.getStartDate().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        String startYear = "" + konference.getStartDate().getYear();
+        String slutDay = "" + konference.getSlutDate().getDayOfMonth();
+        String slutMonth =
+            konference.getSlutDate().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH);
+        String slutYear = "" + konference.getSlutDate().getYear();
+        if (konference.getStartDate().getMonthValue() == konference.getSlutDate().getMonthValue()
+            && startYear.equals(slutYear)) {
+            timePeriod = startDay + ". til " + slutDay + ". " + startMonth + " " + startYear;
+        }
+        else
+            if (startYear.equals(slutYear)) {
+                timePeriod = startDay + ". " + startMonth + " til " + slutDay + ". " + slutMonth
+                    + " " + startYear;
+            }
+            else {
+                timePeriod = startDay + ". " + startMonth + " " + startYear + " til " + slutDay
+                    + ". " + slutMonth
+                    + " " + startYear;
+            }
+        return timePeriod;
+    }
 
-//    public static void addTilmeldning(Tilmeldning tilmeldning, String ledsager,
-//    }
+    /**
+     * Udskriver tilmeldningsfristen i tekst form
+     * @param konference
+     * @return
+     */
+    public static String printTilmeldningsfrist(Konference konference) {
+        String str = konference.getTilmeldningsfrist().getDayOfMonth() + ". " + konference
+            .getTilmeldningsfrist().getMonth().getDisplayName(TextStyle.FULL, Locale.ENGLISH) + " "
+            + konference.getTilmeldningsfrist().getYear();
+        return str;
+    }
+    //----------------------------------------------------------
     
     /**
      * Opretter ny deltager
@@ -140,6 +190,8 @@ public class Service {
         return Storage.getDeltagere();
     }
     
+    //----------------------------------------------------------
+    
     /**
      * Opretter nyt firma
      * @param navn
@@ -181,6 +233,8 @@ public class Service {
     public static ArrayList<Firma> getFirmaer() {
         return Storage.getFirmaer();
     }
+    
+    //----------------------------------------------------------
 
     /**
      * Opretter hotel
@@ -219,6 +273,10 @@ public class Service {
         hotel.setTilvalg(tilvalg);
     }
     
+    /**
+     * Henter alle oprettede hoteller
+     * @return
+     */
     public static ArrayList<Hotel> getHotels() {
         return Storage.getHoteller();
     }
@@ -235,43 +293,11 @@ public class Service {
 
     }
 
-    // -------------------------------------------------------------------------
-    
     /**
-     * Opretter udflugt
-     * @param navn
-     * @param pris
-     * @param date
+     * Henter liste over deltagere der tilknyttet hotellet
+     * @param hotel
      * @return
-     */
-    public static Udflugt createUdflugt(String navn, double pris, LocalDateTime date) {
-        Udflugt udflugt = new Udflugt(navn, pris, date);
-        Storage.addUdflugt(udflugt);
-        return udflugt;
-    }
-    
-    /**
-     * Sletter udflugt
-     * @param udflugt
-     */
-    public static void removeUdflugt(Udflugt udflugt) {
-        Storage.removeUdflugt(udflugt);
-    }
-
-    /**
-     * Opdaterer udflugt
-     * @param udflugt
-     * @param navn
-     * @param pris
-     * @param date
-     */
-    public static void updateUdflugt(Udflugt udflugt, String navn, double pris,
-        LocalDateTime date) {
-        udflugt.setNavn(navn);
-        udflugt.setPris(pris);
-        udflugt.setDato(date);
-    }
-
+    */
     public static String getOvernatninger(Hotel hotel) {
         String output = "";
         for (Deltager d : Storage.getDeltagere()) {
@@ -293,6 +319,57 @@ public class Service {
         return output;
     }
 
+    // -------------------------------------------------------------------------
+    
+    /**
+     * Opretter udflugt
+     * @param navn
+     * @param pris
+     * @param date
+     * @return
+     */
+    public static Udflugt createUdflugt(Konference konference, String navn, double pris,
+        LocalDate date) {
+        
+        Udflugt udflugt = new Udflugt(navn, pris, date);
+        konference.addUdflugt(udflugt);
+        Storage.addUdflugt(udflugt);
+        return udflugt;
+        
+    }
+    
+    /**
+     * Sletter udflugt
+     * @param udflugt
+     */
+    public static void removeUdflugt(Udflugt udflugt, Konference konference) {
+        Storage.removeUdflugt(udflugt);
+        konference.removeUdflugt(udflugt);
+    }
+
+    /**
+     * Opdaterer udflugt
+     * @param udflugt
+     * @param navn
+     * @param pris
+     * @param date
+     */
+    public static void updateUdflugt(Udflugt udflugt, String navn, double pris,
+        LocalDate date) {
+        udflugt.setNavn(navn);
+        udflugt.setPris(pris);
+        udflugt.setDato(date);
+    }
+    
+    public static ArrayList<Udflugt> getUdflugter(Konference konference) {
+        return konference.getUdflugter();
+    }
+    
+    /**
+     * Søger efter deltager med samme tlfNr
+     * @param tlfNr
+     * @return
+     */
     public static Deltager findDeltager(String tlfNr) {
         Deltager deltager = null;
         int i = 0;
@@ -306,28 +383,48 @@ public class Service {
         }
         return deltager;
     }
+    
+    // -------------------------------------------------------------------------
 
+    /**
+     *
+     * Gør alle datoer før startdate og slutdate utilgængelige i kalenderen
+     * @param dpDate
+     * @param startDate
+     * @param slutDate
+     * @return
+     */
+    public static DatePicker fjernDates(DatePicker dpDate, LocalDate startDate,
+        LocalDate slutDate) {
+
+        dpDate = new DatePicker(startDate);
+        dpDate.setDayCellFactory((p) -> new DateCell() {
+            @Override
+            public void updateItem(LocalDate ld, boolean bln) {
+                super.updateItem(ld, bln);
+                setDisable(ld.isBefore(startDate) || ld.isAfter(slutDate));
+            }
+        });
+        
+        return dpDate;
+    }
+    
     /**
      * Initializes the storage with some objects.
      */
     public static void initStorage() {
         
-        ArrayList<HotelTilvalg> tilvalg = new ArrayList<>();
-        
-        Konference k1 = Service.createKonference("Klima ændring", 250);
-        Konference k2 = Service.createKonference("Nano teknologi", 499);
-        Konference k3 = Service.createKonference("Fremtidens energi", 799,
-            LocalDate.of(2017, 01, 7), LocalDate.of(2017, 01, 9), LocalDate.of(2017, 01, 7));
-        Service.createHotel("Radison", "blabla2", 150, 250, tilvalg);
-        Service.createHotel("Ez living", "Dada 12", 99, 150, tilvalg);
-        Tilmeldning t = new Tilmeldning("Bob", 19, "Dalgas Avenue 21", "Danmark", 1, k3,
+        createKonference("Klima ændring", 250);
+        createKonference("Nano teknologi", 499);
+        createHotel("Radison", "blabla2", 150, 250, new ArrayList<>());
+        createHotel("Ez living", "Dada 12", 99, 150, new ArrayList<>());
+        Tilmeldning t = new Tilmeldning("Bob", 19, "Dalgas Avenue 21", "Danmark", 1,
+            createKonference("Fremtidens energi", 799, LocalDate.of(2017, 01, 7),
+                LocalDate.of(2017, 01, 9), LocalDate.of(2017, 01, 7)),
             LocalDate.of(2017, 01, 9), LocalDate.of(2017, 01, 7), Storage.getHoteller().get(0));
-//        Tilmeldning t =
         
-        Service.createDeltager("Bob", 19, "Dalgas Avenue 21", "Danmark", 1);
-        Service.createDeltager("Finn", 50, "Boulevarden 16", "Norge", 2);
-//        Service.createDeltager("Peter", 54, "Green Street 192", "USA", 3);
-        System.out.println(Storage.getDeltagere());
+        createDeltager("Bob", 19, "Dalgas Avenue 21", "Danmark", 1);
+        createDeltager("Finn", 50, "Boulevarden 16", "Norge", 2);
         Storage.getDeltagere().get(1).addTilmeldning(t);
         
     }

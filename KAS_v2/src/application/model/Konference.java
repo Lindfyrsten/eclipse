@@ -81,8 +81,16 @@ public class Konference {
         return hoteller;
     }
 
+    public void addUdflugt(Udflugt udflugt) {
+        udflugter.add(udflugt);
+    }
+    
+    public void removeUdflugt(Udflugt udflugt) {
+        udflugter.remove(udflugt);
+    }
+
     public ArrayList<Udflugt> getUdflugter() {
-        return udflugter;
+        return new ArrayList<>(udflugter);
     }
     
     @Override
@@ -122,7 +130,8 @@ public class Konference {
         
         String output = "";
         for (Tilmeldning t : tilmeldninger) {
-            output = output + t.getDeltager() + "\n";
+            output = output + t.getDeltager().getNavn() + " ( Alder: " + t.getDeltager().getAlder()
+                + " )\n";
         }
         return output;
     }

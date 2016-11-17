@@ -10,15 +10,20 @@ import application.model.HotelTilvalg;
 import application.service.Service;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 /**
  * @author Kristian
@@ -58,37 +63,31 @@ public class HotelWindow extends Stage {
         GridPane pane = new GridPane();
         Scene scene = new Scene(pane);
         setScene(scene);
-        initStyle(StageStyle.UNDECORATED);
         initModality(Modality.APPLICATION_MODAL);
-        pane.setPrefSize(400, 400);
-        pane.setPadding(new Insets(10));
+        pane.setPadding(new Insets(10, 10, 0, 10));
         pane.setHgap(50);
         pane.setVgap(10);
-//        pane.setGridLinesVisible(true);
-
+        
+        Label lblTitle = new Label("Opret Hotel");
+        lblTitle.setTextFill(Color.GREY);
+        lblTitle.setFont(Font.font("Impact", 24));
+        GridPane.setHalignment(lblTitle, HPos.CENTER);
+        pane.add(lblTitle, 0, 0, 2, 1);
         Label lblName = new Label("Navn");
-        pane.add(lblName, 0, 0);
-
-        txfNavn = new TextField();
-        pane.add(txfNavn, 0, 1);
-
         Label lblAddressse = new Label("Addresse");
-        pane.add(lblAddressse, 0, 2);
-
-        txfAddresse = new TextField();
-        pane.add(txfAddresse, 0, 3);
-
         Label lblEnkelt = new Label("Enkeltværelse");
-        pane.add(lblEnkelt, 0, 4);
-        txfEnkelt = new TextField();
-        pane.add(txfEnkelt, 0, 5);
-
         Label lblDobbelt = new Label("Dobbeltværelse");
-        pane.add(lblDobbelt, 0, 6);
+        txfNavn = new TextField();
+        txfAddresse = new TextField();
+        txfEnkelt = new TextField();
         txfDobbelt = new TextField();
-        pane.add(txfDobbelt, 0, 7);
+        VBox vbxFields = new VBox(10, lblName, txfNavn, lblAddressse, txfAddresse, lblEnkelt,
+            txfEnkelt, lblDobbelt, txfDobbelt);
+        pane.add(vbxFields, 0, 1, 1, 2);
 
         Label lblTv = new Label("Tilvalg:");
+        GridPane.setHalignment(lblTv, HPos.CENTER);
+        pane.add(lblTv, 1, 1);
         cbMad = new CheckBox();
         cbMad.setText("Mad");
         cbBad = new CheckBox();
@@ -108,26 +107,32 @@ public class HotelWindow extends Stage {
         txfWiFi.setDisable(true);
         txfWiFi.setMaxWidth(50);
         txfWiFi.setText("0");
-        pane.add(lblTv, 1, 0);
-        pane.add(cbMad, 1, 1);
-        pane.add(txfMad, 1, 2);
-        pane.add(cbBad, 1, 3);
-        pane.add(txfBad, 1, 4);
-        pane.add(cbWiFi, 1, 5);
-        pane.add(txfWiFi, 1, 6);
-
+        
+        VBox vbxTilvalg = new VBox(10, cbMad, txfMad, cbBad, txfBad, cbWiFi, txfWiFi);
+        pane.add(vbxTilvalg, 1, 2);
+        vbxTilvalg.setAlignment(Pos.BASELINE_CENTER);
+        vbxTilvalg
+            .setStyle("-fx-padding: 10;" + "-fx-border-width: 2;" + "-fx-border-color: lightgrey");
+        
+        Button btnOK = new Button("OK");
+        btnOK.setPrefSize(75, 50);
+        GridPane.setHalignment(btnOK, HPos.RIGHT);
+        GridPane.setValignment(btnOK, VPos.BOTTOM);
+        btnOK.setOnAction(event -> okAction());
+        
         Button btnCancel = new Button("Annuller");
-        pane.add(btnCancel, 0, 8);
-        GridPane.setHalignment(btnCancel, HPos.LEFT);
+        btnCancel.setPrefSize(75, 50);
+        GridPane.setHalignment(btnCancel, HPos.RIGHT);
+        GridPane.setValignment(btnCancel, VPos.BOTTOM);
         btnCancel.setOnAction(event -> cancelAction());
 
-        Button btnOK = new Button("OK");
-        pane.add(btnOK, 0, 8);
-        GridPane.setHalignment(btnOK, HPos.RIGHT);
-        btnOK.setOnAction(event -> okAction());
+        HBox hbxBtns = new HBox(100, btnOK, btnCancel);
+        hbxBtns.setPadding(new Insets(10, 10, 0, 10));
+        hbxBtns.setAlignment(Pos.BASELINE_CENTER);
+        pane.add(hbxBtns, 0, 3, 2, 1);
 
         lblError = new Label();
-        pane.add(lblError, 0, 9);
+        pane.add(lblError, 0, 4);
         lblError.setStyle("-fx-text-fill: red");
 
         initControls();

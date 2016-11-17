@@ -13,6 +13,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -114,13 +115,18 @@ public class HotelPane extends Stage {
         hbxCheckBox.getChildren().addAll(cbMad, cbBad, cbWiFi);
 
         Button btnCreate = new Button("Opret");
+        btnCreate.setPrefSize(75, 50);
         Button btnUpdate = new Button("Opdater");
+        btnUpdate.setPrefSize(75, 50);
         Button btnDelete = new Button("Slet");
+        btnDelete.setPrefSize(75, 50);
         Button btnCancel = new Button("Annuller");
+        GridPane.setHalignment(btnCancel, HPos.RIGHT);
+        GridPane.setValignment(btnCancel, VPos.BOTTOM);
 
         VBox vbxGæste = new VBox(10, lblGæster, txaGæster);
 //        vbxGæste.setAlignment(Pos.BASELINE_CENTER);
-        vbxGæste.setPadding(new Insets(10));
+//        vbxGæste.setPadding(new Insets(10));
         
         HBox hbxButtons = new HBox(40);
         hbxButtons.setPadding(new Insets(10, 0, 0, 0));
@@ -145,8 +151,7 @@ public class HotelPane extends Stage {
         pane.add(hbxCheckBox, 1, 5, 2, 1);
         pane.add(hbxButtons, 1, 6, 3, 1);
         pane.add(btnCancel, 2, 7);
-        
-        GridPane.setHalignment(btnCancel, HPos.RIGHT);
+
         if (lvwHotels.getItems().size() > 0) {
             lvwHotels.getSelectionModel().select(0);
         }
@@ -179,13 +184,11 @@ public class HotelPane extends Stage {
         }
 
         HotelWindow hot = new HotelWindow(hotel);
-//        hide();
         hot.showAndWait();
         
         lvwHotels.getItems().setAll(Service.getHotels());
         lvwHotels.getSelectionModel().select(index);
-//        show();
-    
+
     }
     
     private void deleteAction() {
@@ -214,10 +217,6 @@ public class HotelPane extends Stage {
         updateControls();
     }
     
-    private void gæsteListe() {
-        
-    }
-
     public void updateControls() {
         cbMad.setSelected(false);
         cbBad.setSelected(false);
@@ -254,7 +253,6 @@ public class HotelPane extends Stage {
             txaGæster.clear();
         }
 
-//        initAllHotelList();
     }
     
 }
