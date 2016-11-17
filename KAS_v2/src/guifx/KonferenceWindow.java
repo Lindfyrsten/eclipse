@@ -112,7 +112,7 @@ public class KonferenceWindow extends Stage {
         lvwUdflugter.setPrefWidth(100);
         lvwUdflugter.setPrefHeight(100);
         lvwUdflugter.setDisable(true);
-        lvwUdflugter.getItems().setAll(konference.getUdflugter());
+
         GridPane.setHalignment(lvwUdflugter, HPos.CENTER);
 
         pane.add(lvwUdflugter, 1, 6, 2, 2);
@@ -168,7 +168,7 @@ public class KonferenceWindow extends Stage {
         startDate = dpStart.getValue();
         slutDate = dpSlut.getValue();
         if (startDate == null || slutDate == null) {
-            lblError.setText("Konference dato skal være oprettet");
+            lblError.setText("Konference dato skal vÃ¦re oprettet");
             return;
         }
 
@@ -218,7 +218,7 @@ public class KonferenceWindow extends Stage {
         }
         else
             if (startDate == null || slutDate == null) {
-                lblError.setText("Konference dato skal være oprettet");
+                lblError.setText("Konference dato skal vÃ¦re oprettet");
                 return;
             }
             else {

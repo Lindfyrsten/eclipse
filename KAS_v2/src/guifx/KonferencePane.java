@@ -28,15 +28,15 @@ import javafx.stage.StageStyle;
 import storage.Storage;
 
 public class KonferencePane extends Stage {
-    
+
     // ===========================================================
     // Fields
     // ===========================================================
     private TextField txfTitel, txfPris;
     private ListView<Konference> lvwKonferencer;
-    private TextArea txaTilmeldninger, txaUdflugter;
+    private TextArea txaTilmeldninger;
     private Label lblDatePeriod, lblFrist;
-    
+
     // ===========================================================
     // Constructors
     // ===========================================================
@@ -44,24 +44,24 @@ public class KonferencePane extends Stage {
         initStyle(StageStyle.UNDECORATED);
         initModality(Modality.APPLICATION_MODAL);
         GridPane pane = new GridPane();
-
+        
         Scene scene = new Scene(pane);
         setTitle("Konference");
         setScene(scene);
         pane.setPadding(new Insets(20));
         pane.setHgap(10);
         pane.setVgap(10);
-
+        
 //      pane.setGridLinesVisible(true);
-
+        
         lvwKonferencer = new ListView<>();
         lvwKonferencer.setPrefSize(200, 200);
         lvwKonferencer.getItems().setAll(Storage.getKonferencer());
-        
+
         ChangeListener<Konference> konferenceListener =
             (ov, oldKonf, newKonference) -> selectionChanged();
         lvwKonferencer.getSelectionModel().selectedItemProperty().addListener(konferenceListener);
-
+        
         Label lblTitle = new Label("Konference Management:");
         lblTitle.setTextFill(Color.GREY);
         lblTitle.setFont(Font.font("Impact", 24));
@@ -72,12 +72,12 @@ public class KonferencePane extends Stage {
         Label lblDateLabel = new Label("Dato: ");
         lblFrist = new Label();
         lblDatePeriod = new Label();
-        
+
         Button btnCreate = new Button("Opret konference");
         Button btnUpdate = new Button("Opdater");
         Button btnDelete = new Button("Slet");
         Button btnCancel = new Button("Annuller");
-        
+
         txfTitel = new TextField();
         txfTitel.setEditable(false);
         txfPris = new TextField();
@@ -85,13 +85,13 @@ public class KonferencePane extends Stage {
         txaTilmeldninger = new TextArea();
         txaTilmeldninger.setEditable(false);
         txaTilmeldninger.setPrefSize(200, 100);
-        
+
         HBox hbxButtons = new HBox(40);
         pane.add(hbxButtons, 0, 6, 3, 1);
         hbxButtons.setPadding(new Insets(10, 0, 0, 0));
         hbxButtons.setAlignment(Pos.BASELINE_CENTER);
         hbxButtons.getChildren().addAll(btnCreate, btnUpdate, btnDelete, btnCancel);
-
+        
         pane.add(lblTitle, 0, 0, 3, 1);
         pane.add(lvwKonferencer, 0, 1, 1, 5);
         pane.add(lblTitel, 1, 1);
@@ -104,37 +104,37 @@ public class KonferencePane extends Stage {
         pane.add(lblDatePeriod, 2, 4);
         pane.add(lblFristLabel, 1, 5);
         pane.add(lblFrist, 2, 5);
-
+        
         GridPane.setHalignment(lblTitle, HPos.CENTER);
         GridPane.setValignment(lblDeltagere, VPos.BASELINE);
-        
+
         btnCreate.setOnAction(event -> createAction());
-        
+
         btnUpdate.setOnAction(event -> updateAction());
-        
+
         btnDelete.setOnAction(event -> deleteAction());
-        
+
         btnCancel.setOnAction(event -> cancelAction());
-        
+
         if (lvwKonferencer.getItems().size() > 0) {
             lvwKonferencer.getSelectionModel().select(0);
         }
-        
+
     }
-    
+
     // ===========================================================
     // Methods
     // ===========================================================
-
+    
     private void createAction() {
         KonferenceWindow kow = new KonferenceWindow("Opret Konference");
         kow.showAndWait();
-
+        
         lvwKonferencer.getItems().setAll(Service.getKonferencer());
         int index = lvwKonferencer.getItems().size() - 1;
         lvwKonferencer.getSelectionModel().select(index);
     }
-    
+
     private void updateAction() {
         Konference konference = lvwKonferencer.getSelectionModel().getSelectedItem();
         if (konference == null) {
@@ -143,12 +143,12 @@ public class KonferencePane extends Stage {
         else {
             KonferenceWindow kof = new KonferenceWindow("Opdater Konference", konference);
             kof.showAndWait();
-
+            
             lvwKonferencer.getItems().setAll(Service.getKonferencer());
             lvwKonferencer.getSelectionModel().select(konference);
         }
     }
-    
+
     private void deleteAction() {
         Konference konference = lvwKonferencer.getSelectionModel().getSelectedItem();
         if (konference == null) {
@@ -159,29 +159,29 @@ public class KonferencePane extends Stage {
             alert.setTitle("Slet Konference");
             alert.setContentText("Er du sikker?");
             Optional<ButtonType> result = alert.showAndWait();
-            
+
             if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
                 Service.deleteKonference(konference);
                 lvwKonferencer.getItems().setAll(Service.getKonferencer());
             }
         }
     }
-
+    
     private void cancelAction() {
         hide();
     }
-
+    
     private void selectionChanged() {
         updateControls();
     }
-
+    
     public void updateControls() {
-
+        
         Konference konference = lvwKonferencer.getSelectionModel().getSelectedItem();
         if (konference != null) {
             txfTitel.setText(konference.getTitel());
             txfPris.setText("" + konference.getPris());
-
+            
             if (konference.getTilmeldninger() != null) {
                 txaTilmeldninger.setText(konference.printTilmeldninger());
             }
@@ -189,21 +189,21 @@ public class KonferencePane extends Stage {
                 txaTilmeldninger.clear();
             }
             if (konference.getStartDate() != null) {
-
+                
                 lblDatePeriod.setText(Service.printKonferencePeriod(konference));
                 lblFrist.setText(Service.printTilmeldningsfrist(konference));
             }
-            
+
             else {
-                
+
                 lblDatePeriod.setText("");
                 lblFrist.setText("");
-
+                
             }
 //            if (konference.getUdflugter().size() > 0){
 //                lvwKonferencer
 //            }
-
+        
         }
     }
 }

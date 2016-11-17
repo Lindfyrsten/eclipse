@@ -21,7 +21,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class UdflugtPane extends Stage {
-    
+
     // ===========================================================
     // Fields
     // ===========================================================
@@ -33,31 +33,32 @@ public class UdflugtPane extends Stage {
     private Label lblError;
     private Konference konference;
     private Udflugt udflugt;
-
+    
     // ===========================================================
     // Constructors
     // ===========================================================
     public UdflugtPane(Konference konference, DatePicker dpDate, Udflugt udflugt) {
         this.konference = konference;
         this.dpDate = dpDate;
+        this.udflugt = udflugt;
         initModality(Modality.APPLICATION_MODAL);
         GridPane pane = new GridPane();
         Scene scene = new Scene(pane);
         setTitle("Opdater udflugt");
         setScene(scene);
-        
+
         initContent(pane);
     }
-
+    
     public UdflugtPane(Konference konference, DatePicker dpDate) {
-        
+
         this(konference, dpDate, null);
         setTitle("Tilføj Udflugt");
-
+        
     }
-
-    //----------------------------------------------------------
     
+    //----------------------------------------------------------
+
     private void initContent(GridPane pane) {
 //      pane.setGridLinesVisible(true);
         pane.setPadding(new Insets(20, 10, 20, 10));
@@ -75,17 +76,17 @@ public class UdflugtPane extends Stage {
         Label lblPris = new Label("Pris:");
         Label lblDate = new Label("Dato");
         lblError = new Label();
-
+        
         lblError.setStyle("-fx-text-fill: red");
-
+        
         btnOK = new Button("OK");
         btnCancel = new Button("Annuller");
         HBox hbxButtons = new HBox(40, btnOK, btnCancel);
         hbxButtons.setAlignment(Pos.BASELINE_CENTER);
-
+        
         btnOK.setOnAction(event -> okAction());
         btnCancel.setOnAction(event -> cancelAction());
-
+        
         pane.add(lblTitle, 0, 0, 2, 1);
         pane.add(lblNavn, 0, 1);
         pane.add(txfNavn, 1, 1);
@@ -95,15 +96,15 @@ public class UdflugtPane extends Stage {
         pane.add(dpDate, 1, 3);
         pane.add(lblError, 0, 4, 2, 1);
         pane.add(hbxButtons, 0, 5, 2, 1);
-
+        
         initControls();
     }
-    
-    private void okAction() {
 
+    private void okAction() {
+        
         navn = txfNavn.getText().trim();
         date = dpDate.getValue();
-
+        
         if (navn.length() == 0) {
             lblError.setText("Titel er tom");
             return;
@@ -112,7 +113,7 @@ public class UdflugtPane extends Stage {
             lblError.setText("Dato er tom");
             return;
         }
-
+        
         double pris = -1;
         try {
             pris = Double.parseDouble(txfPris.getText().trim());
@@ -125,28 +126,28 @@ public class UdflugtPane extends Stage {
             return;
         }
         // Call service methods
-
+        
         if (udflugt != null) {
             Service.updateUdflugt(udflugt, navn, pris, date);
         }
         else {
-            
+
             Service.createUdflugt(konference, navn, pris, date);
         }
         hide();
-
+        
     }
-
+    
     private void cancelAction() {
         hide();
     }
-
+    
     private void initControls() {
         if (udflugt != null) {
             txfNavn.setText(udflugt.getNavn());
             txfPris.setText("" + udflugt.getPris());
             dpDate.setValue(udflugt.getDato());
-
+            
         }
 //        else {
 //
@@ -155,5 +156,5 @@ public class UdflugtPane extends Stage {
 //
 //        }
     }
-
+    
 }

@@ -14,13 +14,20 @@ public class Deltager {
     // ===========================================================
     // Constructors
     // ===========================================================
-    public Deltager(String navn, int alder, String addresse, String land, int tlfNr) {
+    public Deltager(String navn, int alder, String addresse, String land, int tlfNr, Firma firma) {
         
         this.navn = navn;
         this.alder = alder;
         this.addresse = addresse;
         this.land = land;
         this.tlfNr = tlfNr;
+        this.firma = firma;
+    }
+
+    public Deltager(String navn, int alder, String addresse, String land, int tlfNr) {
+        
+        this(navn, alder, addresse, land, tlfNr, null);
+
     }
     
     // ===========================================================
@@ -77,7 +84,7 @@ public class Deltager {
     public ArrayList<Tilmeldning> getTilmeldninger() {
         return tilmeldninger;
     }
-
+    
     // ===========================================================
     // Methods
     // ===========================================================
