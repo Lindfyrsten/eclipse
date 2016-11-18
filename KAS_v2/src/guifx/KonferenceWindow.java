@@ -30,9 +30,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-/**
- * @author Kristian
- */
 public class KonferenceWindow extends Stage {
     // ===========================================================
     // Fields
@@ -46,7 +43,7 @@ public class KonferenceWindow extends Stage {
         dpFrist = new DatePicker();
     private String titel;
     private LocalDate startDate, slutDate, fristDate;
-
+    
     // ===========================================================
     // Constructors
     // ===========================================================
@@ -57,43 +54,43 @@ public class KonferenceWindow extends Stage {
         Scene scene = new Scene(pane);
         setScene(scene);
         this.konference = konference;
-        
-        setTitle(title);
 
-        initContent(pane);
+        setTitle(title);
         
+        initContent(pane);
+
     }
-    
+
     public KonferenceWindow(String title) {
         this(title, null);
         setTitle(title);
-        
-    }
 
+    }
+    
     // ===========================================================
     // Methods
     // ===========================================================
     private void initContent(GridPane pane) {
-        
+
 //        pane.setGridLinesVisible(true);
         pane.setPadding(new Insets(10));
         pane.setHgap(20);
         pane.setVgap(20);
-        
+
         Label lblTitle = new Label(getTitle());
         lblTitle.setTextFill(Color.GREY);
         lblTitle.setFont(Font.font("Impact", 24));
         pane.add(lblTitle, 0, 0, 2, 1);
         GridPane.setHalignment(lblTitle, HPos.CENTER);
-        
+
         String[] str = { "Titel", "Pris", "Start dato", "Slut dato", "Tilmeldningsfrist" };
         for (int i = 0; i < str.length; i++) {
-
+            
             Label lbl = new Label(str[i]);
             pane.add(lbl, 0, i + 1);
-            
+
         }
-        
+
         lblError = new Label();
         lblError.setStyle("-fx-text-fill: red");
         Button btnUdflugt = new Button("Tilføj udflugt");
@@ -105,18 +102,18 @@ public class KonferenceWindow extends Stage {
         btnUdflugt.setOnAction(event -> createUdflugt());
         btnUpdateUdflugt.setOnAction(event -> updateUdflugt());
         btnSletUdflugt.setOnAction(event -> sletUdflugt());
-        
-        pane.add(vbxUdflugt, 0, 6, 2, 2);
 
+        pane.add(vbxUdflugt, 0, 6, 2, 2);
+        
         lvwUdflugter = new ListView<>();
         lvwUdflugter.setPrefWidth(100);
         lvwUdflugter.setPrefHeight(100);
         lvwUdflugter.setDisable(true);
-
+        
         GridPane.setHalignment(lvwUdflugter, HPos.CENTER);
-
+        
         pane.add(lvwUdflugter, 1, 6, 2, 2);
-
+        
         VBox txfBox = new VBox(10);
         txfBox.getChildren().addAll(txfTitel, txfPris, dpStart, dpSlut, dpFrist);
         txfTitel.setPrefWidth(165);
@@ -124,11 +121,11 @@ public class KonferenceWindow extends Stage {
         dpSlut.setPrefWidth(105);
         dpFrist.setPrefWidth(105);
         pane.add(txfBox, 1, 1, 1, 5);
-        
+
         cbDato = new CheckBox("Dato");
         pane.add(cbDato, 1, 4);
         GridPane.setHalignment(cbDato, HPos.RIGHT);
-        
+
         Button btnOK = new Button("OK");
         Button btnCancel = new Button("Annuller");
         btnOK.setPrefSize(75, 50);
@@ -138,15 +135,15 @@ public class KonferenceWindow extends Stage {
         btnBox.getChildren().addAll(btnOK, btnCancel);
         btnBox.setAlignment(Pos.BASELINE_CENTER);
         cbDato.setOnAction(event -> clearDato());
-        
+
         btnCancel.setOnAction(event -> cancelAction());
-        
+
         btnOK.setOnAction(event -> okAction());
-
-        initControls();
         
-    }
+        initControls();
 
+    }
+    
     private void clearDato() {
         if (cbDato.isSelected()) {
             dpStart.setDisable(false);
@@ -160,10 +157,10 @@ public class KonferenceWindow extends Stage {
             dpSlut.setDisable(true);
             dpFrist.setValue(null);
             dpFrist.setDisable(true);
-
+            
         }
     }
-
+    
     private void createUdflugt() {
         startDate = dpStart.getValue();
         slutDate = dpSlut.getValue();
@@ -171,12 +168,12 @@ public class KonferenceWindow extends Stage {
             lblError.setText("Konference dato skal vÃ¦re oprettet");
             return;
         }
-
+        
         else {
-            
+
             DatePicker dpDate = Service.fjernDates(new DatePicker(startDate), startDate, slutDate);
             Service.fjernDates(dpDate, startDate, slutDate);
-
+            
             UdflugtPane udflugtPane = new UdflugtPane(konference, dpDate);
             setOpacity(0.1);
             udflugtPane.showAndWait();
@@ -184,9 +181,9 @@ public class KonferenceWindow extends Stage {
             lvwUdflugter.setDisable(false);
             lvwUdflugter.getItems().setAll(Service.getUdflugter(konference));
         }
-        
+
     }
-    
+
     private void sletUdflugt() {
         Udflugt udflugt = lvwUdflugter.getSelectionModel().getSelectedItem();
         if (udflugt == null) {
@@ -204,53 +201,52 @@ public class KonferenceWindow extends Stage {
             }
         }
     }
-
+    
     private void updateUdflugt() {
-
+        
         startDate = dpStart.getValue();
         slutDate = dpSlut.getValue();
-        
-        Udflugt udflugt = lvwUdflugter.getSelectionModel().getSelectedItem();
 
+        Udflugt udflugt = lvwUdflugter.getSelectionModel().getSelectedItem();
+        
         if (udflugt == null) {
             lblError.setText("Ingen udflugt valgt");
             return;
         }
-        else
-            if (startDate == null || slutDate == null) {
-                lblError.setText("Konference dato skal vÃ¦re oprettet");
-                return;
-            }
-            else {
-                DatePicker dpDate =
-                    Service.fjernDates(new DatePicker(startDate), startDate, slutDate);
-
-                UdflugtPane ufp = new UdflugtPane(konference, dpDate, udflugt);
-                setOpacity(0.1);
-                ufp.showAndWait();
-                setOpacity(1);
-                lvwUdflugter.getItems().setAll(Service.getUdflugter(konference));
-            }
-
+        else if (startDate == null || slutDate == null) {
+            lblError.setText("Konference dato skal vÃ¦re oprettet");
+            return;
+        }
+        else {
+            DatePicker dpDate =
+                Service.fjernDates(new DatePicker(startDate), startDate, slutDate);
+            
+            UdflugtPane ufp = new UdflugtPane(konference, dpDate, udflugt);
+            setOpacity(0.1);
+            ufp.showAndWait();
+            setOpacity(1);
+            lvwUdflugter.getItems().setAll(Service.getUdflugter(konference));
+        }
+        
     }
-
+    
     private void cancelAction() {
         hide();
     }
-
+    
     private void okAction() {
-        
+
         titel = txfTitel.getText().trim();
         startDate = dpStart.getValue();
         slutDate = dpSlut.getValue();
         fristDate = dpFrist.getValue();
-        
+
         if (titel.length() == 0) {
             lblError.setText("Titel er tom");
             return;
         }
         if (cbDato.isSelected()) {
-
+            
             if (startDate == null) {
                 lblError.setText("Start dato er tom");
                 return;
@@ -264,7 +260,7 @@ public class KonferenceWindow extends Stage {
                 return;
             }
         }
-        
+
         double pris = -1;
         try {
             pris = Double.parseDouble(txfPris.getText().trim());
@@ -276,11 +272,11 @@ public class KonferenceWindow extends Stage {
             lblError.setText("Pris er ikke et positivt nummer");
             return;
         }
-        
-        // Call service methods
-        
-        if (cbDato.isSelected()) {
 
+        // Call service methods
+
+        if (cbDato.isSelected()) {
+            
             if (konference != null) {
                 Service.updateKonference(konference, titel, pris, startDate, slutDate, fristDate);
             }
@@ -296,22 +292,22 @@ public class KonferenceWindow extends Stage {
                 Service.createKonference(titel, pris);
             }
         }
-        
+
         hide();
     }
-
+    
     private void initControls() {
         if (konference != null) {
             txfTitel.setText(konference.getTitel());
             txfPris.setText("" + konference.getPris());
-
+            
             if (konference.getStartDate() != null) {
                 cbDato.setSelected(true);
                 clearDato();
                 dpStart.setValue(konference.getStartDate());
                 dpSlut.setValue(konference.getSlutDate());
                 dpFrist.setValue(konference.getTilmeldningsfrist());
-
+                
             }
             else {
                 cbDato.setSelected(false);
@@ -321,10 +317,10 @@ public class KonferenceWindow extends Stage {
                 lvwUdflugter.setDisable(false);
                 lvwUdflugter.getItems().setAll(konference.getUdflugter());
             }
-            
+
         }
         else {
-            
+
             txfTitel.clear();
             txfPris.clear();
             clearDato();
