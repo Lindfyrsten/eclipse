@@ -10,7 +10,7 @@ public class Værkfører extends Mekaniker {
     }
 
     @Override
-    public double getUgentligLøn() {
-        return super.getUgentligLøn() + 37 * tillæg;
+    public double beregnLoen() {
+        return super.beregnLoen() + 37 * tillæg;
     }
 }
