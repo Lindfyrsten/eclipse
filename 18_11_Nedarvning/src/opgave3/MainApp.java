@@ -66,6 +66,16 @@ public class MainApp {
             sum += k.getTotalDiscountPrice();
             originalSum += k.getTotalPrice();
         }
+        
+//        double testSum = 0;
+//        for (Customer c : kunder) {
+//            for (Order o : c.getOrders()) {
+//                testSum += c.getDiscountPrice(o);
+//            }
+//            System.out.println(testSum);
+//            testSum = 0;
+//
+//        }
         System.out.println("Samlet pris for alle ordrer uden rabat:" + originalSum);
         System.out.println("Samlet pris for alle ordrer med rabat:" + sum);
         System.out.println("Samlet rabat besparelse = " + (originalSum - sum));

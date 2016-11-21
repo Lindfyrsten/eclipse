@@ -1,13 +1,23 @@
+/**
+ *
+ */
 package question;
 
-public class NumericQuestion extends Question {
+import java.util.ArrayList;
+
+/**
+ * @author Kristian
+ */
+public class AnyCorrectChoiceQuestion extends Question {
     // ===========================================================
     // Fields
     // ===========================================================
+    private ArrayList<String> correctAnswer = new ArrayList<>();
     // ===========================================================
     // Constructors
     // ===========================================================
-    public NumericQuestion() {
+    
+    public AnyCorrectChoiceQuestion() {
         super();
     }
     // ===========================================================
@@ -18,13 +28,17 @@ public class NumericQuestion extends Question {
     // Methods
     // ===========================================================
     @Override
+    public void setAnswer(String correctResponse) {
+        correctAnswer.add(correctResponse);
+    }
+    
+    @Override
     public boolean checkAnswer(String response) {
-
-        boolean answerBool = true;
-        if (Double.parseDouble(super.getAnswer()) - Double.parseDouble(response) > 0.01
-            || Double.parseDouble(super.getAnswer()) - Double.parseDouble(response) < -0.01) {
-            answerBool = false;
-
+        boolean answerBool = false;
+        for (String s : correctAnswer) {
+            if (response.toLowerCase().trim().equals(s.toLowerCase())) {
+                answerBool = true;
+            }
         }
         return answerBool;
     }
