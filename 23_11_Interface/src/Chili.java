@@ -28,4 +28,9 @@ public class Chili implements Measurable {
     public double getMeasure() {
         return styrke;
     }
+    
+    @Override
+    public String toString() {
+        return navn + " " + styrke;
+    }
 }
