@@ -7,12 +7,12 @@ package opgave3;
  * @author Kristian
  */
 public class FixedDiscount implements Discount {
-    
+
     // ===========================================================
     // Fields
     // ===========================================================
     private double priceLoft, rabat;
-    
+
     // ===========================================================
     // Constructors
     // ===========================================================
@@ -23,10 +23,11 @@ public class FixedDiscount implements Discount {
     // ===========================================================
     // Getter & Setter
     // ===========================================================
-    
+
     // ===========================================================
     // Methods
     // ===========================================================
+    @Override
     public double getDiscountPrice(double originalPrice) {
         double discountPrice = originalPrice;
         if (originalPrice >= priceLoft) {

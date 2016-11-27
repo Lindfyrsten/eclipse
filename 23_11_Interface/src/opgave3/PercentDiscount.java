@@ -5,7 +5,7 @@ public class PercentDiscount implements Discount {
     // Fields
     // ===========================================================
     private double percent;
-    
+
     // ===========================================================
     // Constructors
     // ===========================================================
@@ -15,11 +15,11 @@ public class PercentDiscount implements Discount {
     // ===========================================================
     // Getter & Setter
     // ===========================================================
-    
+
     // ===========================================================
     // Methods
     // ===========================================================
-
+    @Override
     public double getDiscountPrice(double originalPrice) {
         double discount = originalPrice / 100 * percent;
         return originalPrice - discount;
