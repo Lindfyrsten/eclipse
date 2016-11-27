@@ -66,12 +66,11 @@ public class BilWindow extends Stage {
         pane.add(lblModel, 0, 4);
         txfModel = new TextField();
         pane.add(txfModel, 0, 5);
-        txfModel.setDisable(true);
         
         Label lblKmKørt = new Label("Km kørt");
-        pane.add(lblKmKørt, 0, 5);
+        pane.add(lblKmKørt, 0, 6);
         txfKmKørt = new TextField();
-        pane.add(txfKmKørt, 0, 6);
+        pane.add(txfKmKørt, 0, 7);
         
 //        cbbPrisGruppe = new ComboBox<>();
 //        pane.add(cbbPrisGruppe, 0, 5);
@@ -79,12 +78,12 @@ public class BilWindow extends Stage {
 //        cbbPrisGruppe.setDisable(true);
         
         Button btnCancel = new Button("Cancel");
-        pane.add(btnCancel, 0, 7);
+        pane.add(btnCancel, 0, 8);
         GridPane.setHalignment(btnCancel, HPos.LEFT);
         btnCancel.setOnAction(event -> cancelAction());
         
         Button btnOK = new Button("OK");
-        pane.add(btnOK, 0, 7);
+        pane.add(btnOK, 0, 8);
         GridPane.setHalignment(btnOK, HPos.RIGHT);
         btnOK.setOnAction(event -> okAction());
         

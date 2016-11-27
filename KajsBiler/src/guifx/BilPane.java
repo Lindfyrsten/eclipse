@@ -8,6 +8,7 @@ import application.service.Service;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -53,11 +54,12 @@ public class BilPane extends GridPane {
         VBox vbxLbls = new VBox(20, lblRegNr, lblMærke, lblModel, lblKmKørt);
         VBox vbxTxfs = new VBox(10, txfRegNr, txfMærke, txfModel, txfKmKørt);
         HBox hbxBtns = new HBox(40, btnCreate, btnUpdate, btnDelete, btnPrisGruppe);
+        hbxBtns.setAlignment(Pos.BASELINE_CENTER);
 
         lvwBiler.setPrefSize(200, 100);
         lvwBiler.getItems().setAll(initAllBilList());
         ChangeListener<Bil> listener =
-            (ov, oldBil, newBil) -> selectedEmployeeChanged();
+            (ov, oldBil, newBil) -> selectedBilChanged();
         lvwBiler.getSelectionModel().selectedItemProperty().addListener(listener);
 
         btnDelete.setOnAction(event -> deleteAction());
@@ -89,7 +91,9 @@ public class BilPane extends GridPane {
         // Wait for the modal dialog to close
 
         lvwBiler.getItems().setAll(initAllBilList());
-        updateControls();
+        int index = lvwBiler.getItems().size() - 1;
+        lvwBiler.getSelectionModel().select(index);
+//        updateControls();
     }
 
     private void updateAction() {
@@ -115,9 +119,9 @@ public class BilPane extends GridPane {
         }
 
         Alert alert = new Alert(AlertType.CONFIRMATION);
-        alert.setTitle("Delete Car");
+        alert.setTitle("Slet Bil");
         // alert.setContentText("Are you sure?");
-        alert.setHeaderText("Are you sure?");
+        alert.setHeaderText("Er du sikker på at du vil slette bilen?");
         Optional<ButtonType> result = alert.showAndWait();
 
         // Wait for the modal dialog to close
@@ -130,7 +134,7 @@ public class BilPane extends GridPane {
 
     }
 
-    private void selectedEmployeeChanged() {
+    private void selectedBilChanged() {
         updateControls();
     }
     
