@@ -9,7 +9,8 @@ public class Soegning {
         boolean found = false;
         int i = 0;
         while (!found && i < tabel.length) {
-            if (tabel[i] % 2 == 1) {
+            
+            if (tabel[i] % 2 != 0) {
 
                 found = true;
                 return found;

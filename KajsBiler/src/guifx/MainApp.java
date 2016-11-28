@@ -34,9 +34,9 @@ public class MainApp extends Application {
     
     public void initTabPane(TabPane tabPane) {
 
-        Tab tabUdlej = new Tab("Udlej Bil");
+        Tab tabUdlej = new Tab("Udlej/Reserver Bil");
         Tab tabAflever = new Tab("Aflever Bil");
-        Tab tabOpret = new Tab("Opret Bil");
+        Tab tabOpret = new Tab("Administrer Biler");
         Tab tabPrisgrupper = new Tab("Administrer Bilgrupper");
         tabPane.getTabs().addAll(tabUdlej, tabAflever, tabOpret, tabPrisgrupper);
         tabPane.setTabClosingPolicy(TabClosingPolicy.UNAVAILABLE);
