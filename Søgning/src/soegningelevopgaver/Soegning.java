@@ -66,40 +66,42 @@ public class Soegning {
         return found;
 
     }
+    
+    //opgave 5 - find kvadratroden lineært og binær
 
-    //opgave 4.1 - find spiller med score ved lineær
-    public Spiller findScoreLineær(ArrayList<Spiller> spillere, int score) {
+    public int findSquareRootLineær(int tal) {
+
         boolean found = false;
+        int result = 0;
         int i = 0;
-        while (!found && i < spillere.size()) {
-            if (spillere.get(i).getMaal() == score) {
-
-                return spillere.get(i);
+        while (!found) {
+            if (i * i <= tal && tal < (i + 1) * (i + 1)) {
+                found = true;
+                if (found) {
+                    
+                    result = i;
+                }
             }
-            else {
-                i++;
-            }
+            i++;
+            
         }
-        return null;
 
+        return result;
     }
-
-    //opgave 4.2 - find spiller med score ved bineær
-
-    public Spiller findScoreBineær(ArrayList<Spiller> spillere, int score) {
+    
+    public int findSquareRootBinær(int tal) {
+        
         boolean found = false;
         int left = 0;
-        int right = spillere.size() - 1;
+        int right = tal;
         int middle = -1;
-        Spiller spiller = null;
         while (!found && left <= right) {
             middle = (left + right) / 2;
-            spiller = spillere.get(middle);
-            int comp = spiller.getMaal() - score;
-            if (comp == 0) {
+            
+            if (middle * middle <= tal && tal < (middle + 1) * (middle + 1)) {
                 found = true;
             }
-            else if (comp > 0) {
+            else if (middle * middle >= tal && tal < (middle + 1) * (middle + 1)) {
                 right = middle - 1;
             }
             else {
@@ -107,46 +109,28 @@ public class Soegning {
             }
         }
         if (found) {
-            return spiller;
+            return middle;
         }
         else {
-            return null;
+            return -1;
         }
     }
-    //opgave 4.3 - find spiller der er mindre end 170cm og har score over 50 mål
-
-    public String findSpillerHøjdeScore(ArrayList<Spiller> spillere) {
+    
+    //Opgave 6
+    
+    public int swapFind(ArrayList<Integer> arr, int tal) {
         boolean found = false;
         int i = 0;
-        while (!found && i < spillere.size()) {
-            if (spillere.get(i).getHoejde() >= 170 && spillere.get(i).getMaal() >= 50) {
-
-                return spillere.get(i).getNavn();
-            }
-            else {
-                i++;
-            }
-        }
-        return "";
-
-    }
-
-    //opgave 5 - find kvadratroden
-
-    public int findSquareRoot(int tal) {
-
-        boolean found = false;
-        int result = 0;
-        int i = 0;
-        while (!found) {
-            if (i * i == tal) {
+        while (!found && i < arr.size()) {
+            if (arr.get(i) == tal && i != 0) {
+                int temp = arr.get(i);
+                arr.set(i, arr.get(i - 1));
+                arr.set(i - 1, temp);
                 found = true;
-                result = i;
+                return i - 1;
             }
-            
+            i++;
         }
-
-        return result;
-
+        return -1;
     }
 }
