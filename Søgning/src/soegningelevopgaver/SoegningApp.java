@@ -1,5 +1,7 @@
 package soegningelevopgaver;
 
+import java.util.ArrayList;
+
 public class SoegningApp {
     
     public static void main(String[] args) {
@@ -7,13 +9,13 @@ public class SoegningApp {
         
         // Kode til afprøvning af opgave 1
         
-        int[] talArray = { 2, 4, 8, 2 };
-        int[] talArrayUdvidet = { 7, 56, 34, 3, 7, 14, 13, 4 };
-        int[] talArrayDuplicate = { 7, 8, 8, 10 };
-        System.out.println("Er der et ulige tal i talArray ? " + s.findUlige(talArray));
-        talArray[2] = 15;
-        System.out.println("Er der et ulige tal i talArray ? " + s.findUlige(talArray));
-        
+//        int[] talArray = { 2, 4, 8, 2 };
+//        int[] talArrayUdvidet = { 7, 56, 34, 3, 7, 14, 13, 4 };
+//        int[] talArrayDuplicate = { 7, 8, 8, 10 };
+//        System.out.println("Er der et ulige tal i talArray ? " + s.findUlige(talArray));
+//        talArray[2] = 15;
+//        System.out.println("Er der et ulige tal i talArray ? " + s.findUlige(talArray));
+//
         // Her tilføjes kode til at afprøve opgaverne 2,3,5,6 og 7
         
         //oggave 2
@@ -48,21 +50,23 @@ public class SoegningApp {
 //            + sm.findSpillerHøjdeScore(spillere));
 
         //opgave 5
-//        System.out.println("Heltalskvadratroden af 111 =  " + s.findSquareRootLineær(111));
-//        System.out.println("Heltalskvadratroden af 10 =  " + s.findSquareRootBinær(10));
+        System.out.println("Heltalskvadratroden af 111 =  " + s.findSquareRootLineær(111));
+        System.out.println("Heltalskvadratroden af 10 =  " + s.findSquareRootBinær(10));
 
         //opgave 6
 
-//        System.out.println("********Opgave 6*********");
-//        ArrayList<Integer> arr1 = new ArrayList<>();
-//        arr1.add(6);
-//        arr1.add(4);
-//        arr1.add(8);
-//        arr1.add(13);
-//        arr1.add(2);
-//        System.out.println(arr1);
-//        System.out.println(s.swapFind(arr1, 13));
-//        System.out.println(arr1);
+        System.out.println("********Opgave 6*********");
+        ArrayList<Integer> arr1 = new ArrayList<>();
+        arr1.add(6);
+        arr1.add(4);
+        arr1.add(8);
+        arr1.add(13);
+        arr1.add(2);
+        System.out.println(arr1);
+        System.out.println("Nye index for tallet 13: " + s.swapFind(arr1, 13));
+        System.out.println(arr1);
+        
+        System.out.println(-3 % 2);
     }
     
 }
