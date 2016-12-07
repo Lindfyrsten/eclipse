@@ -1,5 +1,7 @@
 package guifx;
 
-public class KundePane {
-    
+import javafx.scene.layout.GridPane;
+
+public class KundePane extends GridPane {
+
 }

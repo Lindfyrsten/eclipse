@@ -2,6 +2,7 @@ package application.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import application.model.Bil;
 import application.model.Kunde;
@@ -9,8 +10,7 @@ import application.model.Udlejning;
 import storage.Storage;
 
 public class Service {
-    public static Kunde createKunde(String navn, String addresse, int tlfNr, int kørekortNr) {
-        Kunde kunde = new Kunde(navn, addresse, tlfNr, kørekortNr);
+    public static Kunde createKunde(Kunde kunde) {
         Storage.addKunde(kunde);
         return kunde;
 
@@ -23,8 +23,10 @@ public class Service {
         
     }
     
-    public static Udlejning createUdlejning(Bil bil, LocalDate startDate, LocalDate slutDate) {
+    public static Udlejning createUdlejning(Bil bil, LocalDate startDate, LocalDate slutDate,
+        Kunde kunde) {
         Udlejning udlejning = new Udlejning(bil, startDate, slutDate);
+        
         Storage.addUdlejning(udlejning);
         bil.setUdlejet(true);
         
@@ -57,6 +59,15 @@ public class Service {
 
     }
 
+    public static ArrayList<Kunde> kundeValg() {
+        ArrayList<Kunde> choices = new ArrayList<>();
+        for (Kunde k : getKunder()) {
+            choices.add(k);
+        }
+        Collections.sort(choices);
+        return choices;
+    }
+
     public static void updateBil(Bil bil, String regNr, String mærke, String model, int kmKørt) {
         bil.setRegNr(regNr);
         bil.setMærke(mærke);
@@ -70,6 +81,27 @@ public class Service {
         createBil("FA-902-123", "Opel", "Kadett", 500000);
         createBil("OA-032-32J", "Lamborghini", "Gallardo", 10000);
         
+    }
+
+    public static Kunde findKunde(String tlfNr) {
+        if (tlfNr.length() > 0) {
+            
+            Kunde kunde = null;
+            int i = 0;
+            boolean keepSearching = true;
+            while (keepSearching && i < Storage.getKunder().size()) {
+                if (Integer.toString(Storage.getKunder().get(i).getTelefonnr()).equals(tlfNr)) {
+                    kunde = Storage.getKunder().get(i);
+                    keepSearching = false;
+                }
+                i++;
+            }
+            
+            return kunde;
+        }
+        else {
+            return null;
+        }
     }
     
 }
