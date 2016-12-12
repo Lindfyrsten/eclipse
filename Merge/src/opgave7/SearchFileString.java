@@ -8,7 +8,7 @@ import java.util.Scanner;
 public class SearchFileString {
 
     public static void main(String[] args) {
-        String fileName = "C:/Users/Kristian/Dropbox/Programmering/personer.txt";
+        String fileName = "C:/Users/Lindbjerg/Dropbox/Programmering/personer.txt";
         System.out.println(linFileSearchPerson(fileName, "Jensen"));
     }
 
@@ -21,7 +21,7 @@ public class SearchFileString {
             Scanner scan = new Scanner(filein);
             while (scan.hasNextLine() && !found) {
                 result = scan.nextLine();
-                if (result.contains(target)) {
+                if (result.endsWith(target)) {
                     found = true;
                 }
 

@@ -8,16 +8,16 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class FilFletningFælles {
-    
+
     public static void main(String[] args) {
-        String path1 = "C:/Users/Kristian/Dropbox/Programmering/talfil.txt";
-        String path2 = "C:/Users/Kristian/Dropbox/Programmering/talfil2.txt";
-        String pathFlettet = "C:/Users/Kristian/Dropbox/Programmering/talfilFlettet.txt";
-        String pathFælles = "C:/Users/Kristian/Dropbox/Programmering/talfilFælles.txt";
+        String path1 = "C:/Users/Lindbjerg/Dropbox/Programmering/talfil.txt";
+        String path2 = "C:/Users/Lindbjerg/Dropbox/Programmering/talfil2.txt";
+        String pathFlettet = "C:/Users/Lindbjerg/Dropbox/Programmering/talfilFlettet.txt";
+        String pathFælles = "C:/Users/Lindbjerg/Dropbox/Programmering/talfilFælles.txt";
         fletAlleHeltal(path1, path2, pathFlettet);
         findfællesTal(path1, path2, pathFælles);
     }
-    
+
     /**
      * Laver en sorteret fil i fileNameNy der indeholder alle
      * heltal fra fileName1 og fileName2 (MAX_VALUE skal ikke i
@@ -28,7 +28,7 @@ public class FilFletningFælles {
         ArrayList<Integer> printList = new ArrayList<>();
         File file1 = new File(fileName1);
         File file2 = new File(fileName2);
-        
+
         try {
             Scanner scan1 = new Scanner(file1);
             Scanner scan2 = new Scanner(file2);
@@ -44,24 +44,24 @@ public class FilFletningFælles {
             }
             scan1.close();
             scan2.close();
-            
-            Collections.sort(printList);
-            
-            PrintWriter printWriter = new PrintWriter(fileNameNy);
 
+            Collections.sort(printList);
+
+            PrintWriter printWriter = new PrintWriter(fileNameNy);
+            
             for (int i : printList) {
                 printWriter.println(i);
             }
             printWriter.flush();
             printWriter.close();
-            
+
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        
-    }
 
+    }
+    
     /**
      * Laver en sorteret fil i fileNameNy der indeholder alle
      * heltal som de to filer har til fælles
@@ -88,7 +88,7 @@ public class FilFletningFælles {
             }
             scan1.close();
             scan2.close();
-            
+
             Collections.sort(list1);
             Collections.sort(list2);
             int i1 = 0;
@@ -97,24 +97,23 @@ public class FilFletningFælles {
                 if (list1.get(i1) < list2.get(i2)) {
                     i1++;
                 }
-                else
-                    if (list1.get(i1) > list2.get(i2)) {
-                        i2++;
-                    }
-                    else {
-                        printWriter.println(list1.get(i1));
-                        i1++;
-                        i2++;
-                    }
+                else if (list1.get(i1) > list2.get(i2)) {
+                    i2++;
+                }
+                else {
+                    printWriter.println(list1.get(i1));
+                    i1++;
+                    i2++;
+                }
             }
-            
+
             printWriter.flush();
             printWriter.close();
-            
+
         }
         catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
-
+    
 }
