@@ -8,6 +8,7 @@ public class Rideskole {
     private ArrayList<Hest> heste = new ArrayList<>();
 
     public Rideskole(String navn) {
+        this.navn = navn;
 
     }
 
@@ -23,10 +24,10 @@ public class Rideskole {
         return new ArrayList<>(heste);
     }
     
-    public Hest getYngsteHest() {
-        Hest yngste = heste.get(0);
+    public String getYngsteHest() {
+        Hest yngste = null;
         if (!heste.isEmpty()) {
-
+            yngste = heste.get(0);
             for (int i = 1; i < heste.size(); i++) {
                 if (heste.get(i).getFødselsaar() > yngste.getFødselsaar()) {
                     yngste = heste.get(i);
@@ -34,7 +35,7 @@ public class Rideskole {
             }
 
         }
-        return yngste;
+        return yngste.toString();
     }
 
 }

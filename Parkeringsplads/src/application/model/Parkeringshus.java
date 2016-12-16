@@ -7,45 +7,43 @@ import java.util.ArrayList;
  *
  */
 public class Parkeringshus {
-
-//    Parkeringsplads[] pladser;
     
     private String addresse;
     private double saldo;
     private ArrayList<Parkeringsplads> pladser = new ArrayList<>();
     private int pladsNummer = 1;
-
+    
     public Parkeringshus(String addresse) {
         this.addresse = addresse;
     }
-    
+
     public String getAddresse() {
         return addresse;
     }
-
+    
     public void newPlads(int antal) {
         int i = 0;
         while (i < antal) {
-
+            
             pladser.add(new Parkeringsplads(pladsNummer));
             pladsNummer++;
             i++;
         }
-        
-    }
 
+    }
+    
     public ArrayList<Parkeringsplads> getPladser() {
         return pladser;
     }
-    
+
     public double getSaldo() {
         return saldo;
     }
-    
+
     public void addSaldo(double saldo) {
         this.saldo += saldo;
     }
-    
+
     /**
      * Finder antal ledige pladser
      */
@@ -58,7 +56,7 @@ public class Parkeringshus {
         }
         return isEmpty;
     }
-
+    
     public ArrayList<Parkeringsplads> getLedigePladser() {
         ArrayList<Parkeringsplads> ledigListe = new ArrayList<>();
         for (Parkeringsplads p : pladser) {
@@ -68,7 +66,7 @@ public class Parkeringshus {
         }
         return ledigListe;
     }
-
+    
     /**
      * @param regNr
      * Finder parkeringspladsnummer på bilen med registreringsnummer regNr, hvis findes
@@ -84,15 +82,18 @@ public class Parkeringshus {
                     found = true;
                 }
             }
+            else {
+                i++;
+            }
         }
-        
-        return nummer;
 
+        return nummer;
+        
     }
-    
+
     @Override
     public String toString() {
         return addresse + " (" + (antalLedigePladser()) + " pladser, Saldo: " + saldo + ")";
     }
-    
+
 }
