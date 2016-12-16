@@ -1,6 +1,7 @@
 package application.model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
@@ -49,5 +50,25 @@ public class Medlem {
         addReservation(r);
         setMakker(makker);
         return r;
+    }
+    
+    public boolean hasAktivReservation() {
+        boolean result = false;
+        int i = 0;
+        while (!result && i < reservationer.size()) {
+            Reservation r = reservationer.get(i);
+            if (r.getDato().atTime(r.getStartTid()).isAfter(LocalDateTime.now())) {
+                result = true;
+            }
+            else {
+                i++;
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return navn;
     }
 }

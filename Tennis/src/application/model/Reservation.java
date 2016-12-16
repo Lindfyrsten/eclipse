@@ -3,7 +3,7 @@ package application.model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class Reservation {
+public class Reservation implements Comparable<Reservation> {
     private LocalDate dato;
     private LocalTime startTid;
     private Bane bane;
@@ -36,5 +36,24 @@ public class Reservation {
 
     public LocalDate getDato() {
         return dato;
+    }
+
+    @Override
+    public String toString() {
+        return dato + " (" + startTid + ") | " + opretter.toString() + " vs. " + makker.toString();
+    }
+    
+    @Override
+    public int compareTo(Reservation o) {
+        if (o.getDato().equals(dato) && o.getStartTid().equals(startTid)) {
+            return bane.getNummer() - o.getBane().getNummer();
+        }
+        else
+            if (o.getDato().equals(dato)) {
+                return o.getStartTid().compareTo(startTid);
+            }
+            else {
+                return o.getDato().compareTo(dato);
+            }
     }
 }
