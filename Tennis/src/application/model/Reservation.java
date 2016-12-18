@@ -8,7 +8,7 @@ public class Reservation implements Comparable<Reservation> {
     private LocalTime startTid;
     private Bane bane;
     private Medlem opretter, makker;
-    
+
     public Reservation(LocalDate dato, LocalTime startTid, Bane bane, Medlem opretter,
         Medlem makker) {
         this.dato = dato;
@@ -17,32 +17,33 @@ public class Reservation implements Comparable<Reservation> {
         this.opretter = opretter;
         this.makker = makker;
     }
-
+    
     public Medlem getMakker() {
         return makker;
     }
-    
+
     public Medlem getOpretter() {
         return opretter;
     }
-
+    
     public Bane getBane() {
         return bane;
     }
-
+    
     public LocalTime getStartTid() {
         return startTid;
     }
-
+    
     public LocalDate getDato() {
         return dato;
     }
-
+    
     @Override
     public String toString() {
-        return dato + " (" + startTid + ") | " + opretter.toString() + " vs. " + makker.toString();
+        return "\n" + dato + " (" + startTid + ") | " + opretter.toString() + " vs. "
+            + makker.toString();
     }
-    
+
     @Override
     public int compareTo(Reservation o) {
         if (o.getDato().equals(dato) && o.getStartTid().equals(startTid)) {
@@ -50,10 +51,10 @@ public class Reservation implements Comparable<Reservation> {
         }
         else
             if (o.getDato().equals(dato)) {
-                return o.getStartTid().compareTo(startTid);
+                return startTid.compareTo(o.getStartTid());
             }
             else {
-                return o.getDato().compareTo(dato);
+                return dato.compareTo(o.getDato());
             }
     }
 }
