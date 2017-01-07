@@ -108,8 +108,8 @@ public class MainApp extends Application {
         btnReset = new Button("Reset");
         btnAddForløb = new Button("Tilføj forløb");
         
-        pane.add(lblBox, 0, 0, 1, 10);
-        pane.add(txfBox, 1, 0, 1, 10);
+        pane.add(lblBox, 0, 2, 1, 10);
+        pane.add(txfBox, 1, 2, 1, 10);
         pane.add(lblForløb, 2, 0, 2, 1);
         pane.add(lblAktørForløb, 2, 1);
         pane.add(lblSystem, 3, 1);
