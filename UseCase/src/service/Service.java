@@ -15,12 +15,9 @@ public class Service {
         String relUseCases, String interessenter, String preBetingelse, String postBetingelse,
         String alternativForloeb, ArrayList<Forloeb> forloebList) {
         UseCase uCase = new UseCase(navn, haendelse, beskrivelse, aktoer, relUseCases,
-            interessenter, preBetingelse, postBetingelse, alternativForloeb);
+            interessenter, preBetingelse, postBetingelse, alternativForloeb, forloebList);
         Storage.addUseCase(uCase);
         return uCase;
     }
     
-    public static void addForloeb(UseCase uCase, Forloeb forloeb) {
-        uCase.addForloeb(forloeb);
-    }
 }
