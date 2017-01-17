@@ -19,6 +19,7 @@ public class Eksempel {
 
         // samlet row
         System.out.println(da.samletRow(array1, 0));
+        System.out.println(array1.toString());
         
     }
 }
