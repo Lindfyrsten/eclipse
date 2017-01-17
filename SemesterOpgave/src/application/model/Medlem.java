@@ -1,6 +1,7 @@
 package application.model;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 public class Medlem {
@@ -59,9 +60,10 @@ public class Medlem {
     }
     // ------------------------------------------------------------------------
     
-    public Reservation createReservation(LocalDate dato, double pris, int timer) {
-        Reservation reservation = new Reservation(dato, pris, timer);
-        reservationer.add(reservation);
+    public Reservation createReservation(LocalDate dato, double pris, LocalTime startTid,
+        int timer) {
+        Reservation reservation = new Reservation(dato, pris, startTid, timer);
+        addReservation(reservation);
         return reservation;
     }
 

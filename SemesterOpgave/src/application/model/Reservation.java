@@ -1,20 +1,32 @@
 package application.model;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 /**
  * @author Kristian Lindbjerg
  */
 public class Reservation {
     private LocalDate dato;
+    private LocalTime startTid;
     private double pris;
     private int timer;
+    private Plads plads;
     private Medlem medlem;
     
-    public Reservation(LocalDate dato, double pris, int timer) {
+    public Reservation(LocalDate dato, double pris, LocalTime startTid, int timer) {
         this.dato = dato;
         this.pris = pris;
+        this.startTid = startTid;
         this.timer = timer;
+    }
+
+    public Reservation(LocalDate dato, double pris, LocalTime startTid, int timer, Plads p) {
+        this.dato = dato;
+        this.pris = pris;
+        this.startTid = startTid;
+        this.timer = timer;
+        this.plads = p;
     }
     
     public LocalDate getDato() {
@@ -29,8 +41,16 @@ public class Reservation {
         return timer;
     }
 
+    public Plads getPlads() {
+        return plads;
+    }
+
     public Medlem getMedlem() {
         return medlem;
+    }
+    
+    public LocalTime getStartTid() {
+        return startTid;
     }
 
     public void setMedlem(Medlem medlem) {
