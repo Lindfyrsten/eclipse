@@ -17,60 +17,60 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
-    
+
     public static void main(String[] args) {
         Application.launch(args);
     }
-    
+
     @Override
     public void init() {
         Service.init();
     }
-    
+
     @Override
     public void start(Stage stage) {
         stage.setTitle("Sønderhøj Netcafé reservation");
         GridPane pane = new GridPane();
         initContent(pane);
-        
+
         Scene scene = new Scene(pane);
         stage.setScene(scene);
         stage.show();
     }
-    
+
     // -------------------------------------------------------------------------
-    
+
     private ListView<Plads> lvwPladser;
     private Button btnOpretStdPlads, btnFindPlads;
     private TextField txfNummer, txfFundetPlads;
     private ToggleGroup group;
     private Område område = null;
     private Label lblError;
-    
+
     private void initContent(GridPane pane) {
         pane.setPadding(new Insets(20));
         pane.setVgap(10);
         pane.setHgap(10);
-
+        
         Label lblPladser = new Label("Pladser:");
         pane.add(lblPladser, 0, 0);
-
+        
         lvwPladser = new ListView<>();
         pane.add(lvwPladser, 0, 1, 2, 4);
         lvwPladser.setPrefWidth(200);
         lvwPladser.setPrefHeight(200);
         lvwPladser.getItems().setAll(Service.getPladser());
-
+        
         btnOpretStdPlads = new Button("Opret plads");
         pane.add(btnOpretStdPlads, 2, 1);
         btnOpretStdPlads.setOnAction(event -> createAction());
-
+        
         Label lblOmråde = new Label("Område:");
         pane.add(lblOmråde, 0, 5);
         VBox box = new VBox();
         group = new ToggleGroup();
         RadioButton rb;
-
+        
         Område[] list = { Område.STANDARD, Område.VIP, Område.BØRNE, Område.TURNERING };
         for (Område o : list) {
             rb = new RadioButton();
@@ -80,9 +80,9 @@ public class MainApp extends Application {
             box.getChildren().add(rb);
         }
         pane.add(box, 1, 5);
-
-        group.selectedToggleProperty().addListener(event -> toggleRadioButton());
         
+        group.selectedToggleProperty().addListener(event -> toggleRadioButton());
+
         Label lblNummer = new Label("Nummer:");
         pane.add(lblNummer, 0, 6);
         txfNummer = new TextField();
@@ -95,20 +95,20 @@ public class MainApp extends Application {
         btnFindPlads = new Button("Find plads");
         pane.add(btnFindPlads, 2, 6);
         btnFindPlads.setOnAction(event -> findAction());
-
+        
         lblError = new Label("");
         pane.add(lblError, 2, 7, 2, 1);
         lblError.setStyle("-fx-text-fill: red");
-        
-    }
 
+    }
+    
     private void toggleRadioButton() {
         område = (Område) group.getSelectedToggle().getUserData();
     }
-    
+
     private void createAction() {
         if (område != null) {
-            
+
             PladsWindow w = new PladsWindow(område);
             w.showAndWait();
             lvwPladser.getItems().setAll(Service.getPladser());
@@ -116,8 +116,9 @@ public class MainApp extends Application {
         else {
             lblError.setText("Vælg et område");
         }
+        lvwPladser.getItems().setAll(Service.getPladser());
     }
-    
+
     private void findAction() {
         int num = -1;
         try {
@@ -140,13 +141,13 @@ public class MainApp extends Application {
                 Plads p = Service.findPlads(område, Integer.parseInt(txfNummer.getText()));
                 if (p != null) {
                     txfFundetPlads.setText(p.toString());
-                    
+
                 }
                 else {
                     txfFundetPlads.setText("Ingen plads fundet");
                 }
-                
+
             }
     }
-    
+
 }
